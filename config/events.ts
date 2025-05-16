@@ -33,6 +33,7 @@ export const categoryStyles: Record<EventCategory, { bg: string; text: string; b
 export interface Event {
   id: string;
   title: string;
+  category: EventCategory;
   date: {
     day?: number;
     month?: number;
@@ -57,6 +58,7 @@ export const upcomingEvents: Event[] = [
   {
     id: "1",
     title: "Tauwerk Sommerfest",
+    category: 'leather',
     date: {
       day: 15,
       month: 7,
@@ -74,6 +76,7 @@ export const upcomingEvents: Event[] = [
   {
     id: "2",
     title: "Open Stage Night",
+    category: 'pride',
     date: {
       day: 22,
       month: 7,
@@ -90,6 +93,7 @@ export const upcomingEvents: Event[] = [
   {
     id: "3",
     title: "Tauwerk Winterfest",
+    category: 'fetish',
     date: {
       day: 15,
       month: 12,
@@ -112,6 +116,7 @@ export const upcomingEvents: Event[] = [
   {
     id: "4",
     title: "Tauwerk Jahreskonzert",
+    category: 'other',
     date: {
       month: 9,
       year: 2024,
@@ -127,6 +132,7 @@ export const upcomingEvents: Event[] = [
   {
     id: "5",
     title: "Tauwerk Workshop",
+    category: 'leather',
     date: {
       day: 10,
       month: 8,
@@ -148,6 +154,7 @@ export const upcomingEvents: Event[] = [
   {
     id: "6",
     title: "Tauwerk Special Event",
+    category: 'pride',
     date: {
       year: 2024,
     },
