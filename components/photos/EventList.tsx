@@ -2,29 +2,25 @@
 
 import React from "react";
 import { Camera, CalendarDays, MapPin } from "lucide-react";
-import { categoryStyles, EventCategory } from "@/config/events";
+import { categoryStyles, EventCategory, Event as ConfigEvent } from "@/config/events";
 
-interface Event {
-  id: string;
-  title: string;
-  category: EventCategory;
-  startDate: Date;
-  endDate?: Date;
-  location?: string;
+interface Event extends ConfigEvent {
   driveLink?: string;
 }
 
-function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat("en-US", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(date);
+function formatDate(date: ConfigEvent['date']): string {
+  if (!date.month) {
+    return `${date.year}`;
+  }
+  if (!date.day) {
+    return `${date.month}/${date.year}`;
+  }
+  return `${date.day}/${date.month}/${date.year}`;
 }
 
 const EventCard = React.memo(({ event }: { event: Event }) => {
   const styles = categoryStyles[event.category];
-  const hasEndDate = event.endDate && event.endDate.getTime() !== event.startDate.getTime();
+  const hasEndDate = false; // We don't have endDate in the current Event interface
   const isAvailable = event.driveLink && event.driveLink !== "#";
 
   return (
@@ -38,13 +34,7 @@ const EventCard = React.memo(({ event }: { event: Event }) => {
             <h3 className={`text-xl font-semibold ${styles.text}`}>{event.title}</h3>
             <div className="flex items-center gap-2 text-gray-400">
               <CalendarDays className="w-4 h-4" />
-              <span>{formatDate(event.startDate)}</span>
-              {hasEndDate && event.endDate && (
-                <>
-                  <span>-</span>
-                  <span>{formatDate(event.endDate)}</span>
-                </>
-              )}
+              <span>{formatDate(event.date)}</span>
             </div>
             {event.location && (
               <div className="flex items-center gap-2 text-gray-400">

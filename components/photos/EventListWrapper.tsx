@@ -1,7 +1,7 @@
 "use client";
 
 import React, { Suspense } from "react";
-import { events } from "@/config/events";
+import { upcomingEvents } from "@/config/events";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import type { Event } from "@/config/events";
@@ -15,13 +15,17 @@ export function EventListWrapper() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const eventsWithPhotos = events
+    const eventsWithPhotos = upcomingEvents
       .filter(event => {
-        const eventDate = new Date(event.startDate);
+        const eventDate = new Date(event.date.year, (event.date.month || 1) - 1, event.date.day || 1);
         eventDate.setHours(0, 0, 0, 0);
-        return event.withPhotos && eventDate <= today;
+        return eventDate <= today;
       })
-      .sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
+      .sort((a, b) => {
+        const dateA = new Date(a.date.year, (a.date.month || 1) - 1, a.date.day || 1);
+        const dateB = new Date(b.date.year, (b.date.month || 1) - 1, b.date.day || 1);
+        return dateB.getTime() - dateA.getTime();
+      });
 
     setFilteredEvents(eventsWithPhotos);
     setIsLoading(false);
