@@ -2,6 +2,34 @@ import { Star } from "lucide-react";
 
 export type EventCategory = 'leather' | 'pride' | 'fetish' | 'other' | 'private';
 
+export const categoryStyles: Record<EventCategory, { bg: string; text: string; border: string }> = {
+  leather: {
+    bg: 'bg-amber-100 dark:bg-amber-900/30',
+    text: 'text-amber-800 dark:text-amber-200',
+    border: 'border-amber-200 dark:border-amber-800'
+  },
+  pride: {
+    bg: 'bg-rainbow-100 dark:bg-rainbow-900/30',
+    text: 'text-rainbow-800 dark:text-rainbow-200',
+    border: 'border-rainbow-200 dark:border-rainbow-800'
+  },
+  fetish: {
+    bg: 'bg-purple-100 dark:bg-purple-900/30',
+    text: 'text-purple-800 dark:text-purple-200',
+    border: 'border-purple-200 dark:border-purple-800'
+  },
+  other: {
+    bg: 'bg-gray-100 dark:bg-gray-900/30',
+    text: 'text-gray-800 dark:text-gray-200',
+    border: 'border-gray-200 dark:border-gray-800'
+  },
+  private: {
+    bg: 'bg-blue-100 dark:bg-blue-900/30',
+    text: 'text-blue-800 dark:text-blue-200',
+    border: 'border-blue-200 dark:border-blue-800'
+  }
+};
+
 export interface Event {
   id: string;
   title: string;
