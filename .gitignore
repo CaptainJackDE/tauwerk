@@ -1,0 +1,63 @@
+# Dependencies
+/node_modules/
+.pnp
+.pnp.js
+
+# Next.js build output
+/.next/
+/out/
+/dist/
+/build/
+
+# Local environment files
+.env
+.env.local
+.env.*.local
+
+# Vercel
+/.vercel/
+
+# Production
+/.cache/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Test coverage
+/coverage/
+/jest-report/
+
+# Editor directories and files
+.vscode/
+/.idea/
+/*.suo
+/*.ntvs*
+/*.njsproj
+/*.sln
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Yarn v2
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# TypeScript
+/*.tsbuildinfo
+
+# Mac
+.DS_Store
+
+# Misc
+/.envrc
+/.env.local.js
+/*.pem
