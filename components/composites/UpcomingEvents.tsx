@@ -10,19 +10,21 @@ interface EventCardProps {
   date: string
   location: string
   id: string
+  isExternal?: boolean
   className?: string
 }
 
-const HomeEventCard = ({ title, date, location, className, id }: EventCardProps) => {
+const HomeEventCard = ({ title, date, location, className, id, isExternal }: EventCardProps) => {
   return (
     <div className={cn(
       "group relative p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10",
       "hover:bg-white/10 hover:border-white/20 hover:shadow-2xl hover:shadow-primary/5",
       "hover:-translate-y-1 transition-all duration-300",
+      "h-[280px] flex flex-col",
       className
     )}>
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      <div className="relative space-y-4">
+      <div className="relative flex-1 flex flex-col space-y-4">
         <div className="flex items-center gap-3">
           <div className="relative">
             <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-primary/20 to-secondary/20 blur opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -42,14 +44,21 @@ const HomeEventCard = ({ title, date, location, className, id }: EventCardProps)
           </div>
         </div>
         
-        <h3 className={cn(
-          "text-xl font-semibold",
-          gradients.title.primary
-        )}>
-          {title}
-        </h3>
+        <div className="space-y-1">
+          <h3 className={cn(
+            "text-xl font-semibold",
+            gradients.title.primary
+          )}>
+            {title}
+          </h3>
+          {isExternal && (
+            <p className="text-xs text-foreground/60 italic">
+              Externes Event
+            </p>
+          )}
+        </div>
         
-        <div className="flex items-center gap-3 text-foreground/70">
+        <div className="flex items-center gap-3 text-foreground/70 mt-auto">
           <MapPin className="w-4 h-4" />
           <span className="text-sm">{location}</span>
         </div>
@@ -113,6 +122,7 @@ export function UpcomingEvents() {
                 date={formatEventDate(event.date)}
                 location={event.location}
                 id={event.id}
+                isExternal={event.isExternal}
               />
             </Link>
           ))}

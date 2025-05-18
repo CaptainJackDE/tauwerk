@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Calendar, MapPin, UserCheck, UserX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Background } from "@/components/ui/background";
+import { PageTitle } from "@/components/ui/PageTitle";
 import Link from "next/link";
 
 interface EventCardProps {
@@ -184,18 +185,10 @@ export default function EventsPage() {
   return (
     <Background className="min-h-screen pt-32 pb-24">
       <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className={cn(
-            "text-5xl font-bold mb-6",
-            gradients.title.primary
-          )}>
-            Unsere Events
-          </h1>
-          <p className="text-xl text-foreground/80 max-w-2xl mx-auto">
-            Entdecke unsere kommenden Veranstaltungen und sei dabei!
-          </p>
-        </div>
+        <PageTitle 
+          title="Unsere Events"
+          subtitle="Entdecke unsere kommenden Veranstaltungen und sei dabei!"
+        />
 
         {/* Events Grid by Year and Month */}
         <div className="space-y-16">

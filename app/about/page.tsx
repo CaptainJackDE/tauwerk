@@ -4,6 +4,7 @@ import { Background } from '@/components/composites/Background'
 import { cn } from "@/lib/utils"
 import { gradients } from "@/config/gradients"
 import { values, teamMembers } from "@/config/about"
+import { PageTitle } from "@/components/ui/PageTitle"
 
 export const metadata: Metadata = {
   title: 'Über uns | Tauwerk',
@@ -14,27 +15,22 @@ export default function AboutPage() {
   return (
     <>
       <Background />
-      <div className="min-h-screen mt-32">
+      <div className="min-h-screen mt-8">
         {/* Header Section */}
         <section className="relative py-24">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center mb-16">
-              <h1 className={cn(
-                "text-5xl md:text-6xl font-bold mb-8",
-                gradients.title.primary
-              )}>
-                Über Tauwerk
-              </h1>
-              <p className="text-xl text-foreground/90 mb-12">
-                Gemeinsam gestalten wir eine offene und respektvolle Community
-              </p>
+            <div className="max-w-4xl mx-auto">
+              <PageTitle 
+                title="Über Tauwerk"
+                subtitle="Gemeinsam gestalten wir eine offene und respektvolle Community"
+              />
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6">
                   <div className="text-4xl font-bold text-primary mb-2">2019</div>
                   <p className="text-foreground/80">Gründungsjahr</p>
                 </div>
                 <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6">
-                  <div className="text-4xl font-bold text-primary mb-2">50+</div>
+                  <div className="text-4xl font-bold text-primary mb-2">10+</div>
                   <p className="text-foreground/80">Aktive Mitglieder</p>
                 </div>
                 <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6">

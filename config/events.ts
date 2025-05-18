@@ -1,14 +1,9 @@
 import { Star } from "lucide-react";
 
-export type EventCategory = 'leather' | 'pride' | 'fetish' | 'other' | 'private';
+export type EventCategory = 'csd' | 'fetish' | 'private' | 'other';
 
 export const categoryStyles: Record<EventCategory, { bg: string; text: string; border: string }> = {
-  leather: {
-    bg: 'bg-amber-100 dark:bg-amber-900/30',
-    text: 'text-amber-800 dark:text-amber-200',
-    border: 'border-amber-200 dark:border-amber-800'
-  },
-  pride: {
+  csd: {
     bg: 'bg-rainbow-100 dark:bg-rainbow-900/30',
     text: 'text-rainbow-800 dark:text-rainbow-200',
     border: 'border-rainbow-200 dark:border-rainbow-800'
@@ -18,15 +13,15 @@ export const categoryStyles: Record<EventCategory, { bg: string; text: string; b
     text: 'text-purple-800 dark:text-purple-200',
     border: 'border-purple-200 dark:border-purple-800'
   },
-  other: {
-    bg: 'bg-gray-100 dark:bg-gray-900/30',
-    text: 'text-gray-800 dark:text-gray-200',
-    border: 'border-gray-200 dark:border-gray-800'
-  },
   private: {
     bg: 'bg-blue-100 dark:bg-blue-900/30',
     text: 'text-blue-800 dark:text-blue-200',
     border: 'border-blue-200 dark:border-blue-800'
+  },
+  other: {
+    bg: 'bg-gray-100 dark:bg-gray-900/30',
+    text: 'text-gray-800 dark:text-gray-200',
+    border: 'border-gray-200 dark:border-gray-800'
   }
 };
 
@@ -57,136 +52,56 @@ export interface Event {
 
 export const upcomingEvents: Event[] = [
   {
-    id: "1",
-    title: "Tauwerk Sommerfest",
-    category: 'leather',
+    id: "puppy-social-may",
+    title: "Puppy-Social",
+    category: 'fetish',
     date: {
-      day: 15,
-      month: 7,
-      year: 2024,
-      time: "14:00",
+      day: 16,
+      month: 5,
+      year: 2025,
+      time: "19:30",
     },
-    location: "Tauwerk, Hamburg",
-    description: "Unser jährliches Sommerfest mit Live-Musik, Workshops und vielen Überraschungen.",
-    isExternal: false,
-    registration: {
-      required: true,
-      open: true,
-      link: "https://example.com/anmeldung/sommerfest"
-    },
-  },
-  {
-    id: "2",
-    title: "Open Stage Night",
-    category: 'pride',
-    date: {
-      day: 22,
-      month: 7,
-      year: 2024,
-      time: "19:00",
-    },
-    location: "Tauwerk, Hamburg",
-    description: "Eine offene Bühne für alle Künstler. Bring deine Instrumente mit und teile deine Musik!",
+    location: "Planbar, Rostock",
+    description: "",
     isExternal: false,
     registration: {
       required: false,
-      open: false
+      open: true,
+      link: ""
     },
   },
   {
-    id: "3",
-    title: "Tauwerk Winterfest",
-    category: 'fetish',
+    id: "csd-hro",
+    title: "CSD Rostock",
+    category: 'csd',
     date: {
-      day: 15,
-      month: 12,
-      year: 2024,
-      time: "16:00",
-    },
-    location: "Tauwerk, Hamburg",
-    description: "Unser gemütliches Winterfest mit Glühwein, Live-Musik und weihnachtlicher Stimmung.",
-    isExternal: false,
-    registration: {
-      required: true,
-      open: false,
-      opensAt: {
-        day: 1,
-        month: 10,
-        year: 2024
-      },
-      link: "https://example.com/anmeldung/winterfest"
-    },
-  },
-  {
-    id: "4",
-    title: "Tauwerk Jahreskonzert",
-    category: 'other',
-    date: {
-      month: 9,
-      year: 2024,
-    },
-    location: "Tauwerk, Hamburg",
-    description: "Unser großes Jahreskonzert mit allen Ensembles und besonderen Gästen.",
-    isExternal: false,
-    registration: {
-      required: true,
-      open: false,
-      link: "https://example.com/anmeldung/jahreskonzert"
-    },
-  },
-  {
-    id: "5",
-    title: "Tauwerk Workshop",
-    category: 'leather',
-    date: {
-      day: 10,
-      month: 8,
-      year: 2024,
-    },
-    location: "Tauwerk, Hamburg",
-    description: "Ein spannender Workshop mit vielen praktischen Übungen.",
-    isExternal: false,
-    registration: {
-      required: true,
-      open: false,
-      opensAt: {
-        day: 1,
-        month: 7,
-        year: 2024
-      },
-      link: "https://example.com/anmeldung/workshop"
-    },
-  },
-  {
-    id: "6",
-    title: "Tauwerk Special Event",
-    category: 'pride',
-    date: {
-      year: 2024,
-    },
-    location: "Tauwerk, Hamburg",
-    description: "Ein besonderes Event mit vielen Überraschungen.",
-    isExternal: false,
-    registration: {
-      required: true,
-      open: false
-    },
-  },
-  {
-    id: "7",
-    title: "Hamburg Pride 2024",
-    category: 'pride',
-    date: {
-      day: 27,
+      day: 19,
       month: 7,
-      year: 2024,
+      year: 2025,
       time: "12:00",
     },
-    location: "Hamburg Innenstadt",
-    description: "Der Hamburger CSD mit buntem Straßenfest, Demonstration und Party. Ein wichtiger Tag für die LGBTQIA+ Community.",
+    location: "Neuer Markt, Rostock",
+    description: "",
     isExternal: true,
     registration: {
       required: false,
+      open: true,
+      link: ""
+    },
+  },
+  {
+    id: "csd-hro-workshop",
+    title: "Einsteiger-Workshop Fetisch",
+    category: 'other',
+    date: {
+      month: 7,
+      year: 2025,
+    },
+    location: "Planbar, Rostock",
+    description: "Beschreibung",
+    isExternal: false,
+    registration: {
+      required: true,
       open: false
     },
   },
