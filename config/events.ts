@@ -42,6 +42,7 @@ export interface Event {
   };
   location: string;
   description: string;
+  isExternal?: boolean;
   registration: {
     required: boolean;
     open: boolean;
@@ -67,6 +68,7 @@ export const upcomingEvents: Event[] = [
     },
     location: "Tauwerk, Hamburg",
     description: "Unser jährliches Sommerfest mit Live-Musik, Workshops und vielen Überraschungen.",
+    isExternal: false,
     registration: {
       required: true,
       open: true,
@@ -85,6 +87,7 @@ export const upcomingEvents: Event[] = [
     },
     location: "Tauwerk, Hamburg",
     description: "Eine offene Bühne für alle Künstler. Bring deine Instrumente mit und teile deine Musik!",
+    isExternal: false,
     registration: {
       required: false,
       open: false
@@ -102,6 +105,7 @@ export const upcomingEvents: Event[] = [
     },
     location: "Tauwerk, Hamburg",
     description: "Unser gemütliches Winterfest mit Glühwein, Live-Musik und weihnachtlicher Stimmung.",
+    isExternal: false,
     registration: {
       required: true,
       open: false,
@@ -123,6 +127,7 @@ export const upcomingEvents: Event[] = [
     },
     location: "Tauwerk, Hamburg",
     description: "Unser großes Jahreskonzert mit allen Ensembles und besonderen Gästen.",
+    isExternal: false,
     registration: {
       required: true,
       open: false,
@@ -140,6 +145,7 @@ export const upcomingEvents: Event[] = [
     },
     location: "Tauwerk, Hamburg",
     description: "Ein spannender Workshop mit vielen praktischen Übungen.",
+    isExternal: false,
     registration: {
       required: true,
       open: false,
@@ -160,8 +166,27 @@ export const upcomingEvents: Event[] = [
     },
     location: "Tauwerk, Hamburg",
     description: "Ein besonderes Event mit vielen Überraschungen.",
+    isExternal: false,
     registration: {
       required: true,
+      open: false
+    },
+  },
+  {
+    id: "7",
+    title: "Hamburg Pride 2024",
+    category: 'pride',
+    date: {
+      day: 27,
+      month: 7,
+      year: 2024,
+      time: "12:00",
+    },
+    location: "Hamburg Innenstadt",
+    description: "Der Hamburger CSD mit buntem Straßenfest, Demonstration und Party. Ein wichtiger Tag für die LGBTQIA+ Community.",
+    isExternal: true,
+    registration: {
+      required: false,
       open: false
     },
   },

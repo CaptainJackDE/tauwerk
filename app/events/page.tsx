@@ -11,6 +11,7 @@ interface EventCardProps {
   date: string;
   location: string;
   description: string;
+  isExternal?: boolean;
   registration: {
     required: boolean;
     open: boolean;
@@ -24,7 +25,7 @@ interface EventCardProps {
   className?: string;
 }
 
-const EventCard = ({ title, date, location, description, registration, className }: EventCardProps) => {
+const EventCard = ({ title, date, location, description, isExternal, registration, className }: EventCardProps) => {
   const getRegistrationStatus = () => {
     if (!registration.required) {
       return "Keine Anmeldung erforderlich";
@@ -80,51 +81,51 @@ const EventCard = ({ title, date, location, description, registration, className
           </div>
         </div>
         
-        <h3 className={cn(
-          "text-2xl font-semibold",
-          gradients.title.primary
-        )}>
-          {title}
-        </h3>
+        <div className="space-y-2">
+          <h3 className={cn(
+            "text-2xl font-semibold",
+            gradients.title.primary
+          )}>
+            {title}
+          </h3>
+          {isExternal && (
+            <p className="text-sm text-foreground/60 italic">
+              Externes Event - nicht von Tauwerk organisiert
+            </p>
+          )}
+        </div>
         
         <p className="text-foreground/70 text-base">
           {description}
         </p>
-        
-        <div className="space-y-3">
-          <div className="flex items-center gap-3 text-foreground/70">
-            <MapPin className="w-5 h-5" />
-            <span className="text-base">{location}</span>
-          </div>
-          <div className="flex items-center gap-3 text-foreground/70">
-            {registration.required ? (
-              <>
-                <UserCheck className="w-5 h-5 text-primary" />
-                <span className="text-base">
-                  {registration.open && registration.link 
-                    ? "Anmeldung möglich" 
-                    : registrationStatus}
-                </span>
-              </>
-            ) : (
-              <>
-                <UserX className="w-5 h-5 text-primary" />
-                <span className="text-base">Keine Anmeldung erforderlich</span>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
 
-      {registration.required && registration.open && registration.link && (
-        <div className="mt-8">
-          <Link href={registration.link} target="_blank" rel="noopener noreferrer">
-            <Button variant="primary" className="w-full">
+        <div className="flex items-center gap-3 text-foreground/70">
+          <MapPin className="w-4 h-4" />
+          <span className="text-sm">{location}</span>
+        </div>
+
+        <div className="flex items-center gap-3 text-foreground/70">
+          {registration.required ? (
+            <UserCheck className="w-4 h-4" />
+          ) : (
+            <UserX className="w-4 h-4" />
+          )}
+          <span className="text-sm">{registrationStatus}</span>
+        </div>
+
+        {registration.required && registration.open && registration.link && (
+          <Link 
+            href={registration.link}
+            className="block w-full"
+          >
+            <Button
+              className="w-full bg-gradient-to-r from-primary/20 to-secondary/20 hover:from-primary/30 hover:to-secondary/30 text-foreground border border-white/10 hover:border-white/20 transition-all duration-300"
+            >
               Jetzt anmelden
             </Button>
           </Link>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
@@ -222,6 +223,7 @@ export default function EventsPage() {
                           date={formatEventDate(event.date)}
                           location={event.location}
                           description={event.description}
+                          isExternal={event.isExternal}
                           registration={event.registration}
                         />
                       </div>
