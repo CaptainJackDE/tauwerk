@@ -24,7 +24,7 @@ export function Hero() {
                 Fetisch-Verein aus Mecklenburg-Vorpommern
               </p>
               <p className="text-lg md:text-xl text-foreground/80 font-light">
-                Vielfalt leben • Gemeinschaft stärken • Fetisch gestalten
+                Vielfalt leben • Gemeinschaft stärken • Fetisch leben
               </p>
             </div>
             <div className="flex flex-col items-center gap-4">
