@@ -2,17 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import fs from 'fs';
-import path from 'path';
 import { Background } from '@/components/composites/Background';
 import { PageTitle } from '@/components/ui/PageTitle';
+import { PageLayout } from "@/components/composites/PageLayout";
 
 interface ImageData {
   src: string;
   alt: string;
 }
 
-export default function Gallery() {
+export default function GalleryPage() {
   const [images, setImages] = useState<ImageData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
@@ -80,23 +79,27 @@ export default function Gallery() {
 
   if (isLoading) {
     return (
-      <>
-        <Background />
-        <div className="min-h-screen mt-32 flex flex-col items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+      <PageLayout
+        title="Galerie"
+        subtitle="Bilder unserer vergangenen Events und Aktivitäten"
+      >
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
         </div>
-      </>
+      </PageLayout>
     );
   }
 
   if (images.length === 0) {
     return (
-      <>
-        <Background />
-        <div className="min-h-screen mt-32 flex flex-col items-center justify-center">
-          <div className="backdrop-blur-lg bg-white/10 p-8 rounded-2xl shadow-xl border border-white/20 max-w-md mx-4">
+      <PageLayout
+        title="Galerie"
+        subtitle="Bilder unserer vergangenen Events und Aktivitäten"
+      >
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="text-center">
             <svg 
-              className="w-16 h-16 text-white/80 mb-4 mx-auto" 
+              className="w-16 h-16 text-muted-foreground mb-4 mx-auto" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -108,58 +111,53 @@ export default function Gallery() {
                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" 
               />
             </svg>
-            <h2 className="text-xl font-semibold text-white mb-2 text-center">Keine Bilder gefunden</h2>
-            <p className="text-white/70 text-center">Derzeit sind keine Bilder in dieser Galerie vorhanden.</p>
+            <p className="text-muted-foreground">
+              Die Galerie wird in Kürze mit Bildern unserer Events gefüllt.
+            </p>
           </div>
         </div>
-      </>
+      </PageLayout>
     );
   }
 
   return (
-    <>
-      <Background />
-      <div className="min-h-screen mt-32 pb-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <PageTitle 
-            title="Bildergalerie"
-            subtitle="Entdecken Sie unsere Sammlung an Bildern"
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {images.map((image, index) => (
-              <div 
-                key={index} 
-                className="group relative aspect-square overflow-hidden rounded-2xl shadow-xl backdrop-blur-lg bg-white/10 border border-white/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-white/10"
-              >
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110 cursor-pointer"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  onClick={() => setSelectedImage(image)}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                      <h3 className="text-lg font-semibold text-white">{image.alt}</h3>
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button 
-                    className="p-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors duration-200"
-                    onClick={() => setSelectedImage(image)}
-                  >
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
-                    </svg>
-                  </button>
+    <PageLayout
+      title="Galerie"
+      subtitle="Bilder unserer vergangenen Events und Aktivitäten"
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {images.map((image, index) => (
+          <div 
+            key={index} 
+            className="group relative aspect-square overflow-hidden rounded-2xl shadow-xl backdrop-blur-lg bg-white/10 border border-white/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-white/10"
+          >
+            <Image
+              src={image.src}
+              alt={image.alt}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-110 cursor-pointer"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              onClick={() => setSelectedImage(image)}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                  <h3 className="text-lg font-semibold text-white">{image.alt}</h3>
                 </div>
               </div>
-            ))}
+            </div>
+            <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <button 
+                className="p-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors duration-200"
+                onClick={() => setSelectedImage(image)}
+              >
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+                </svg>
+              </button>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
 
       {/* Bild-Overlay */}
@@ -230,6 +228,6 @@ export default function Gallery() {
           </div>
         </div>
       )}
-    </>
+    </PageLayout>
   );
 } 

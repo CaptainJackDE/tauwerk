@@ -2,6 +2,7 @@ import React from 'react';
 import { Background } from '@/components/composites/Background';
 import { PageTitle } from '@/components/ui/PageTitle';
 import { cn } from '@/lib/utils';
+import { gradients } from "@/config/gradients";
 
 interface PageLayoutProps {
   title: string;
@@ -14,18 +15,16 @@ export function PageLayout({ title, subtitle, children, className }: PageLayoutP
   return (
     <>
       <Background />
-      <div className={cn("mt-8", className)}>
-        <section className="relative py-24">
-          <div className="container mx-auto px-4">
-            <div className="max-w-7xl mx-auto">
-              <PageTitle 
-                title={title}
-                subtitle={subtitle}
-              />
-              {children}
-            </div>
+      <div className="relative flex flex-col min-h-[calc(100vh-6rem)]">
+        <div className="container mx-auto px-4 pt-32 pb-12 flex-grow">
+          <div className="max-w-4xl mx-auto">
+            <PageTitle 
+              title={title}
+              subtitle={subtitle}
+            />
+            <div className={cn("", className)}>{children}</div>
           </div>
-        </section>
+        </div>
       </div>
     </>
   );
