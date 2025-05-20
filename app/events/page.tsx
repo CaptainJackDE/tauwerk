@@ -3,8 +3,7 @@ import { gradients } from "@/config/gradients";
 import { cn } from "@/lib/utils";
 import { Calendar, MapPin, UserCheck, UserX } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Background } from "@/components/ui/background";
-import { PageTitle } from "@/components/ui/PageTitle";
+import { PageLayout } from '@/components/composites/PageLayout';
 import Link from "next/link";
 
 interface EventCardProps {
@@ -183,51 +182,46 @@ export default function EventsPage() {
   }
 
   return (
-    <Background className="min-h-screen pt-32 pb-24">
-      <div className="container mx-auto px-4">
-        <PageTitle 
-          title="Unsere Events"
-          subtitle="Entdecke unsere kommenden Veranstaltungen und sei dabei!"
-        />
-
-        {/* Events Grid by Year and Month */}
-        <div className="space-y-16">
-          {Object.entries(eventsByYearAndMonth).map(([year, months]) => (
-            <div key={year} className="space-y-12">
-              <h2 className={cn(
-                "text-3xl font-semibold",
-                gradients.title.primary
-              )}>
-                {year}
-              </h2>
-              {Object.entries(months).map(([month, events]) => (
-                <div key={`${year}-${month}`} className="space-y-6">
-                  <h3 className={cn(
-                    "text-2xl font-medium",
-                    gradients.title.primary
-                  )}>
-                    {getMonthName(Number(month))}
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {events.map((event) => (
-                      <div key={event.id} id={`event-${event.id}`}>
-                        <EventCard
-                          title={event.title}
-                          date={formatEventDate(event.date)}
-                          location={event.location}
-                          description={event.description}
-                          isExternal={event.isExternal}
-                          registration={event.registration}
-                        />
-                      </div>
-                    ))}
-                  </div>
+    <PageLayout 
+      title="Unsere Events"
+      subtitle="Entdecke unsere kommenden Veranstaltungen und sei dabei!"
+    >
+      <div className="space-y-16">
+        {Object.entries(eventsByYearAndMonth).map(([year, months]) => (
+          <div key={year} className="space-y-12">
+            <h2 className={cn(
+              "text-3xl font-semibold",
+              gradients.title.primary
+            )}>
+              {year}
+            </h2>
+            {Object.entries(months).map(([month, events]) => (
+              <div key={`${year}-${month}`} className="space-y-6">
+                <h3 className={cn(
+                  "text-2xl font-medium",
+                  gradients.title.primary
+                )}>
+                  {getMonthName(Number(month))}
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {events.map((event) => (
+                    <div key={event.id} id={`event-${event.id}`}>
+                      <EventCard
+                        title={event.title}
+                        date={formatEventDate(event.date)}
+                        location={event.location}
+                        description={event.description}
+                        isExternal={event.isExternal}
+                        registration={event.registration}
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          ))}
-        </div>
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
-    </Background>
+    </PageLayout>
   );
 } 
