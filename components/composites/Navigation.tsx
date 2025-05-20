@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { gradients } from '@/config/gradients'
+import { NAVIGATION, SITE } from '@/config/constants'
 
 export function Navigation() {
   return (
@@ -11,44 +12,20 @@ export function Navigation() {
             href="/"
             className={`text-2xl font-bold ${gradients.title.primary} ${gradients.title.hover} hover:opacity-80 transition-opacity`}
           >
-            Tauwerk
+            {SITE.name}
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">
-            <Link
-              href="/"
-              className="relative text-foreground/80 hover:text-primary transition-colors group"
-            >
-              <span>Home</span>
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
-            </Link>
-            <Link
-              href="/about"
-              className="relative text-foreground/80 hover:text-primary transition-colors group"
-            >
-              <span>Über uns</span>
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
-            </Link>
-            <Link
-              href="/events"
-              className="relative text-foreground/80 hover:text-primary transition-colors group"
-            >
-              <span>Events</span>
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
-            </Link>
-            <Link
-              href="/gallery"
-              className="relative text-foreground/80 hover:text-primary transition-colors group">
-              <span>Galerie</span>
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
-            </Link>
-            <Link
-              href="/contact"
-              className="relative text-foreground/80 hover:text-primary transition-colors group"
-            >
-              <span>Kontakt</span>
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
-            </Link>
+            {NAVIGATION.items.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="relative text-foreground/80 hover:text-primary transition-colors group"
+              >
+                <span>{item.name}</span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
+              </Link>
+            ))}
           </div>
         </div>
       </div>

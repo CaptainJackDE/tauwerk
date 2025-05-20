@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { gradients } from '@/config/gradients';
 import { Instagram, Mail, MapPin } from 'lucide-react';
 import Link from 'next/link';
+import { SITE } from '@/config/constants';
 
 export default function ContactPage() {
   return (
@@ -36,7 +37,7 @@ export default function ContactPage() {
               </div>
             </div>
             <Link 
-              href="https://instagram.com/tauwerk_mv" 
+              href={SITE.social.instagram.url}
               target="_blank"
               rel="noopener noreferrer"
               className="block w-full"
@@ -44,7 +45,7 @@ export default function ContactPage() {
               <Button
                 className="w-full bg-gradient-to-r from-primary/20 to-secondary/20 hover:from-primary/30 hover:to-secondary/30 text-foreground border border-white/10 hover:border-white/20 transition-all duration-300"
               >
-                @tauwerk_mv auf Instagram
+                @{SITE.social.instagram.username} auf Instagram
               </Button>
             </Link>
           </div>
@@ -72,10 +73,10 @@ export default function ContactPage() {
               Für allgemeine Anfragen und Kooperationen
             </p>
             <Link 
-              href="mailto:info@tauwerk.de"
+              href={`mailto:${SITE.email}`}
               className="text-primary hover:text-primary/80 transition-colors"
             >
-              info@tauwerk.de
+              {SITE.email}
             </Link>
           </div>
 
@@ -99,7 +100,7 @@ export default function ContactPage() {
               Unsere Events finden in verschiedenen Locations in Rostock statt
             </p>
             <p className="text-foreground/70">
-              Rostock, Deutschland
+              {SITE.location}
             </p>
           </div>
         </div>

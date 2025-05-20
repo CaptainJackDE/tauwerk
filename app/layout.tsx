@@ -1,6 +1,6 @@
 // app/layout.tsx
 import "@/styles/globals.css";
-import { Metadata, Viewport } from "next";
+import { Viewport } from "next";
 import { Providers } from "./providers";
 import { fontSans } from "@/config/fonts";
 import { Analytics } from "@vercel/analytics/react";
@@ -8,13 +8,11 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Navigation } from "@/components/composites/Navigation";
 import { Send, Instagram } from 'lucide-react';
+import { SITE } from '@/config/constants';
+import {Tooltip} from "@heroui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Tauwerk - Fetisch-Verein Rostock",
-  description: "Tauwerk ist ein Fetisch-Verein aus Mecklenburg-Vorpommern mit Sitz in Rostock. Wir fördern Vielfalt, veranstalten Events und stärken die Fetisch-Community.",
-};
 
 export const viewport: Viewport = { /* … */ };
 
@@ -46,7 +44,7 @@ export default function RootLayout({
                 <div className="container mx-auto px-4">
                   <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                     <div className="text-sm text-muted-foreground">
-                      © {new Date().getFullYear()} Tauwerk e.V. Rostock. Alle Rechte vorbehalten.
+                      © {new Date().getFullYear()} {SITE.name}. Alle Rechte vorbehalten.
                     </div>
                     <div className="flex flex-wrap justify-center gap-6">
                       <a href="/legal" className="text-sm text-muted-foreground hover:text-primary transition-colors">
@@ -55,17 +53,9 @@ export default function RootLayout({
                       <a href="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                         Datenschutz
                       </a>
+                      <Tooltip content={`Folge uns auf Instagram: @${SITE.social.instagram.username}`} showArrow={true}>
                       <a 
-                        href="https://t.me/tauwerk" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                        aria-label="Telegram"
-                      >
-                        <Send className="w-5 h-5" />
-                      </a>
-                      <a 
-                        href="https://instagram.com/tauwerk_mv" 
+                        href={SITE.social.instagram.url}
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="text-muted-foreground hover:text-primary transition-colors"
@@ -73,6 +63,18 @@ export default function RootLayout({
                       >
                         <Instagram className="w-5 h-5" />
                       </a>
+                      </Tooltip>
+
+                      <Tooltip content={`Folge uns auf Telegram: @${SITE.social.telegram.username}`} showArrow={true}>
+                        <a href={SITE.social.telegram.url}
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-muted-foreground hover:text-primary transition-colors"
+                          aria-label="Telegram"
+                          >
+                          <Send className="w-5 h-5" />
+                        </a>
+                      </Tooltip>
                     </div>
                   </div>
                 </div>

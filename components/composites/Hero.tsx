@@ -3,6 +3,7 @@ import { Button } from '../ui/button';
 import { gradients } from '@/config/gradients';
 import { getTodayEvent, formatEventDate } from "@/config/events";
 import { Calendar } from "lucide-react";
+import { SITE } from '@/config/constants';
 
 export function Hero() {
   const todayEvent = getTodayEvent();
@@ -17,14 +18,14 @@ export function Hero() {
         <div className="backdrop-blur-2xl bg-black/10 rounded-3xl p-12 md:p-16 border border-white/10 shadow-2xl">
           <div className="space-y-8">
             <h1 className={`text-6xl md:text-8xl font-bold ${gradients.title.primary} ${gradients.title.hover} ${gradients.title.animation}`}>
-              Tauwerk
+              {SITE.name}
             </h1>
             <div className="space-y-4">
               <p className="text-2xl md:text-3xl text-foreground/90 font-light">
-                Fetisch-Verein aus Mecklenburg-Vorpommern
+                {SITE.description}
               </p>
               <p className="text-lg md:text-xl text-foreground/80 font-light">
-                Vielfalt leben • Gemeinschaft stärken • Fetisch leben
+                {SITE.tagline}
               </p>
             </div>
             <div className="flex flex-col items-center gap-4">
