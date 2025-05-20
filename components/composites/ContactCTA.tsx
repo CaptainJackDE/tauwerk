@@ -1,4 +1,4 @@
-import { Mail } from 'lucide-react';
+import { Instagram, Mail } from 'lucide-react';
 
 export function ContactCTA() {
   return (
@@ -15,8 +15,8 @@ export function ContactCTA() {
               href="/contact" 
               className="inline-flex items-center gap-2 px-8 py-4 bg-primary/90 text-primary-foreground rounded-xl hover:bg-primary transition-all duration-300"
             >
-              <Mail className="w-5 h-5" />
-              Kontakt aufnehmen
+              <Instagram className="w-5 h-5" />
+              Kontakt
             </a>
             <a 
               href="/join" 

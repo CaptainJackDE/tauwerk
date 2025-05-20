@@ -70,7 +70,6 @@ const HomeEventCard = ({ title, date, location, className, id, isExternal }: Eve
 export function UpcomingEvents() {
   // Sortiere Events nach Datum
   const sortedEvents = [...upcomingEvents].sort((a, b) => {
-    // Sortiere nach Jahr
     if (a.date.year !== b.date.year) {
       return a.date.year - b.date.year;
     }

@@ -32,7 +32,6 @@ export default function GalleryPage() {
     loadImages();
   }, []);
 
-  // Schließen des Overlays bei ESC-Taste
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -43,7 +42,6 @@ export default function GalleryPage() {
     return () => window.removeEventListener('keydown', handleEsc);
   }, []);
 
-  // Navigation mit Pfeiltasten
   useEffect(() => {
     const handleArrowKeys = (event: KeyboardEvent) => {
       if (!selectedImage) return;
@@ -160,14 +158,12 @@ export default function GalleryPage() {
         ))}
       </div>
 
-      {/* Bild-Overlay */}
       {selectedImage && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-lg"
           onClick={() => setSelectedImage(null)}
         >
           <div className="relative w-full h-full flex items-center justify-center p-4">
-            {/* Schließen-Button */}
             <button 
               className="absolute top-4 right-4 p-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors duration-200 z-10"
               onClick={(e) => {
@@ -180,7 +176,6 @@ export default function GalleryPage() {
               </svg>
             </button>
 
-            {/* Vorheriges Bild Button */}
             <button 
               className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors duration-200 z-10"
               onClick={(e) => {
@@ -193,7 +188,6 @@ export default function GalleryPage() {
               </svg>
             </button>
 
-            {/* Nächstes Bild Button */}
             <button 
               className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors duration-200 z-10"
               onClick={(e) => {
@@ -206,7 +200,6 @@ export default function GalleryPage() {
               </svg>
             </button>
 
-            {/* Bild */}
             <div 
               className="relative w-full max-w-7xl aspect-[4/3]"
               onClick={(e) => e.stopPropagation()}
@@ -221,7 +214,6 @@ export default function GalleryPage() {
               />
             </div>
 
-            {/* Bildtitel */}
             <div className="absolute bottom-4 left-0 right-0 text-center">
               <h3 className="text-xl font-semibold text-white">{selectedImage.alt}</h3>
             </div>

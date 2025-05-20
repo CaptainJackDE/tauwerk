@@ -31,4 +31,4 @@ export function Navigation() {
       </div>
     </nav>
   )
-} 
+}

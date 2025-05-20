@@ -13,7 +13,6 @@ import {Tooltip} from "@heroui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
 
-
 export const viewport: Viewport = { /* … */ };
 
 export default function RootLayout({
@@ -54,15 +53,15 @@ export default function RootLayout({
                         Datenschutz
                       </a>
                       <Tooltip content={`Folge uns auf Instagram: @${SITE.social.instagram.username}`} showArrow={true}>
-                      <a 
-                        href={SITE.social.instagram.url}
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                        aria-label="Instagram"
-                      >
-                        <Instagram className="w-5 h-5" />
-                      </a>
+                        <a 
+                          href={SITE.social.instagram.url}
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-muted-foreground hover:text-primary transition-colors"
+                          aria-label="Instagram"
+                        >
+                          <Instagram className="w-5 h-5" />
+                        </a>
                       </Tooltip>
 
                       <Tooltip content={`Folge uns auf Telegram: @${SITE.social.telegram.username}`} showArrow={true}>
@@ -71,7 +70,7 @@ export default function RootLayout({
                           rel="noopener noreferrer" 
                           className="text-muted-foreground hover:text-primary transition-colors"
                           aria-label="Telegram"
-                          >
+                        >
                           <Send className="w-5 h-5" />
                         </a>
                       </Tooltip>

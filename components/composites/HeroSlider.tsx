@@ -35,7 +35,6 @@ export function HeroSlider() {
 
   return (
     <div className="relative w-full h-full">
-      {/* Slides */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
           <div
@@ -55,7 +54,6 @@ export function HeroSlider() {
         ))}
       </div>
 
-      {/* Navigation Dots */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
         {slides.map((_, index) => (
           <button

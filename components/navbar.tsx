@@ -14,13 +14,6 @@ export const Navbar = () => {
       position="sticky"
       className="bg-transparent backdrop-blur-md z-50"
     >
-      <NavbarContent className="sm:hidden flex items-center justify-end px-4" justify="end">
-        <ThemeSwitch />
-      </NavbarContent>
-
-      <NavbarContent className="hidden sm:flex flex-1 justify-end items-center" justify="end">
-        <ThemeSwitch />
-      </NavbarContent>
     </HeroUINavbar>
   );
 };
