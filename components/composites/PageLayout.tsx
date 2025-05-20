@@ -14,7 +14,7 @@ export function PageLayout({ title, subtitle, children, className }: PageLayoutP
   return (
     <>
       <Background />
-      <div className={cn("min-h-screen mt-8", className)}>
+      <div className={cn("mt-8", className)}>
         <section className="relative py-24">
           <div className="container mx-auto px-4">
             <div className="max-w-7xl mx-auto">
