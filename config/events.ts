@@ -1,4 +1,4 @@
-import { Star } from "lucide-react";
+import { Star, LucideIcon, Calendar, MapPin, Users, Clock, Ticket } from 'lucide-react';
 
 export type EventCategory = 'csd' | 'fetish' | 'private' | 'other';
 
@@ -25,51 +25,43 @@ export const categoryStyles: Record<EventCategory, { bg: string; text: string; b
   }
 };
 
+export interface EventDate {
+  year: number;
+  month?: number;
+  day?: number;
+  time?: string;
+}
+
+export interface EventRegistration {
+  required: boolean;
+  open: boolean;
+  opensAt?: {
+    day: number;
+    month: number;
+    year: number;
+  };
+  link?: string;
+}
+
+export interface EventPrice {
+  regular?: number;
+  reduced?: number;
+  currency?: string;
+}
+
 export interface Event {
   id: string;
   title: string;
   category: EventCategory;
-  date: {
-    day?: number;
-    month?: number;
-    year: number;
-    time?: string;
-  };
+  date: EventDate;
   location: string;
   description: string;
   isExternal?: boolean;
-  registration: {
-    required: boolean;
-    open: boolean;
-    opensAt?: {
-      day: number;
-      month: number;
-      year: number;
-    };
-    link?: string;
-  };
+  registration: EventRegistration;
+  price?: EventPrice;
 }
 
 export const upcomingEvents: Event[] = [
-  {
-    id: "puppy-social-may",
-    title: "Puppy-Social",
-    category: 'fetish',
-    date: {
-      day: 16,
-      month: 5,
-      year: 2025,
-      time: "19:30",
-    },
-    location: "Planbar, Rostock",
-    description: "",
-    isExternal: false,
-    registration: {
-      required: false,
-      open: true,
-      link: ""
-    },
-  },
   {
     id: "csd-hro",
     title: "CSD Rostock",
@@ -127,33 +119,23 @@ export function getTodayEvent(): Event | null {
   }) || null;
 }
 
-export function formatEventDate(date: Event['date']): string {
-  // Wenn nur das Jahr bekannt ist
-  if (!date.month) {
-    return `${date.year} (Termin wird noch bekannt gegeben)`;
+export function formatEventDate(date: EventDate): string {
+  const parts: string[] = [];
+
+  if (date.day) {
+    parts.push(date.day.toString().padStart(2, '0'));
+  }
+  if (date.month) {
+    parts.push(date.month.toString().padStart(2, '0'));
+  }
+  parts.push(date.year.toString());
+
+  let formattedDate = parts.join('.');
+  if (date.time) {
+    formattedDate += ` (${date.time} Uhr)`;
   }
 
-  // Wenn Monat und Jahr bekannt sind
-  if (!date.day) {
-    return `${getMonthName(date.month)} ${date.year} (Termin wird noch bekannt gegeben)`;
-  }
-
-  // Wenn Tag, Monat und Jahr bekannt sind
-  const eventDate = new Date(date.year, date.month - 1, date.day);
-  const formattedDate = eventDate.toLocaleDateString('de-DE', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-
-  // Wenn die Uhrzeit fehlt
-  if (!date.time) {
-    return `${formattedDate} (Uhrzeit wird noch bekannt gegeben)`;
-  }
-
-  // Vollständiges Datum mit Uhrzeit
-  return `${formattedDate}, ${date.time} Uhr`;
+  return formattedDate;
 }
 
 export function formatRegistrationStatus(event: Event): string {

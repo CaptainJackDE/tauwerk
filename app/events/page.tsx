@@ -1,7 +1,7 @@
 import { upcomingEvents, formatEventDate } from "@/config/events";
 import { gradients } from "@/config/gradients";
 import { cn } from "@/lib/utils";
-import { Calendar, MapPin, UserCheck, UserX } from "lucide-react";
+import { Calendar, MapPin, UserCheck, UserX, Euro } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageLayout } from '@/components/composites/PageLayout';
 import Link from "next/link";
@@ -22,10 +22,15 @@ interface EventCardProps {
     };
     link?: string;
   };
+  price?: {
+    regular?: number;
+    reduced?: number;
+    currency?: string;
+  };
   className?: string;
 }
 
-const EventCard = ({ title, date, location, description, isExternal, registration, className }: EventCardProps) => {
+const EventCard = ({ title, date, location, description, isExternal, registration, price, className }: EventCardProps) => {
   const getRegistrationStatus = () => {
     if (!registration.required) {
       return "Keine Anmeldung erforderlich";
@@ -112,6 +117,24 @@ const EventCard = ({ title, date, location, description, isExternal, registratio
           )}
           <span className="text-sm">{registrationStatus}</span>
         </div>
+
+        {price && (
+          <div className="flex items-center gap-3 text-foreground/70">
+            <Euro className="w-4 h-4" />
+            <div className="text-sm">
+              {price.regular && (
+                <span className="mr-2">
+                  {price.regular} {price.currency}
+                </span>
+              )}
+              {price.reduced && (
+                <span className="text-foreground/50">
+                  (ermäßigt: {price.reduced} {price.currency})
+                </span>
+              )}
+            </div>
+          </div>
+        )}
 
         {registration.required && registration.open && registration.link && (
           <Link 
@@ -213,6 +236,7 @@ export default function EventsPage() {
                         description={event.description}
                         isExternal={event.isExternal}
                         registration={event.registration}
+                        price={event.price}
                       />
                     </div>
                   ))}
