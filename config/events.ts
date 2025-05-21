@@ -131,6 +131,17 @@ export function formatEventDate(date: EventDate): string {
   parts.push(date.year.toString());
 
   let formattedDate = parts.join('.');
+  
+  // Wenn nur das Jahr bekannt ist
+  if (!date.month) {
+    formattedDate = `${date.year} (Termin wird noch bekannt gegeben)`;
+  }
+  // Wenn nur Jahr und Monat bekannt sind
+  else if (!date.day) {
+    const monthName = getMonthName(date.month);
+    formattedDate = `${monthName} ${date.year} (Tag wird noch bekannt gegeben)`;
+  }
+
   if (date.time) {
     formattedDate += ` (${date.time} Uhr)`;
   }
