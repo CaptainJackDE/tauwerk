@@ -2,7 +2,7 @@ import { PageLayout } from '@/components/composites/PageLayout';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { gradients } from '@/config/gradients';
-import { Instagram, Mail, MapPin, MessageCircle } from 'lucide-react';
+import { Instagram, Mail, Send, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { SITE } from '@/config/constants';
 
@@ -59,7 +59,7 @@ export default function ContactPage() {
           <div className="relative">
             <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-primary/10 to-secondary/10 blur opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="relative rounded-lg bg-gradient-to-br from-primary/5 to-secondary/5 p-2">
-              <MessageCircle className="w-5 h-5 text-primary/80" />
+              <Send className="w-5 h-5 text-primary/80" />
             </div>
           </div>
           <span className="text-foreground/70 group-hover:text-foreground transition-colors">
