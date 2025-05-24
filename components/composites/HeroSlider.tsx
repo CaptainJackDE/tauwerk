@@ -1,25 +1,25 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { cn } from '@/lib/utils';
+import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 const slides = [
   {
     id: 1,
-    image: '/images/hero/hero-1.jpg',
+    image: "/images/hero/hero-1.jpg",
   },
   {
     id: 2,
-    image: '/images/hero/hero-2.jpg',
+    image: "/images/hero/hero-2.jpg",
   },
   {
     id: 3,
-    image: '/images/hero/hero-3.jpg',
+    image: "/images/hero/hero-3.jpg",
   },
   {
     id: 4,
-    image: '/images/hero/hero-4.jpg',
-  }
+    image: "/images/hero/hero-4.jpg",
+  },
 ];
 
 export function HeroSlider() {
@@ -41,7 +41,7 @@ export function HeroSlider() {
             key={slide.id}
             className={cn(
               "absolute inset-0 transition-opacity duration-1000",
-              index === currentSlide ? "opacity-100" : "opacity-0"
+              index === currentSlide ? "opacity-100" : "opacity-0",
             )}
           >
             <div className="absolute inset-0 bg-black/30" />
@@ -61,9 +61,9 @@ export function HeroSlider() {
             onClick={() => setCurrentSlide(index)}
             className={cn(
               "w-2 h-2 rounded-full transition-all duration-300",
-              index === currentSlide 
-                ? "bg-white w-4" 
-                : "bg-white/50 hover:bg-white/75"
+              index === currentSlide
+                ? "bg-white w-4"
+                : "bg-white/50 hover:bg-white/75",
             )}
             aria-label={`Go to slide ${index + 1}`}
           />
@@ -71,4 +71,4 @@ export function HeroSlider() {
       </div>
     </div>
   );
-} 
+}

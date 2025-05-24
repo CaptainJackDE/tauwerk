@@ -1,9 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { Background } from '@/components/composites/Background';
-import { PageTitle } from '@/components/ui/PageTitle';
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { PageLayout } from "@/components/composites/PageLayout";
 
 interface ImageData {
@@ -19,11 +17,11 @@ export default function GalleryPage() {
   useEffect(() => {
     const loadImages = async () => {
       try {
-        const response = await fetch('/api/gallery');
+        const response = await fetch("/api/gallery");
         const data = await response.json();
         setImages(data);
       } catch (error) {
-        console.error('Fehler beim Laden der Bilder:', error);
+        console.error("Fehler beim Laden der Bilder:", error);
       } finally {
         setIsLoading(false);
       }
@@ -34,43 +32,49 @@ export default function GalleryPage() {
 
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         setSelectedImage(null);
       }
     };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
   useEffect(() => {
     const handleArrowKeys = (event: KeyboardEvent) => {
       if (!selectedImage) return;
-      
-      const currentIndex = images.findIndex(img => img.src === selectedImage.src);
-      
-      if (event.key === 'ArrowRight') {
+
+      const currentIndex = images.findIndex(
+        (img) => img.src === selectedImage.src,
+      );
+
+      if (event.key === "ArrowRight") {
         const nextIndex = (currentIndex + 1) % images.length;
         setSelectedImage(images[nextIndex]);
-      } else if (event.key === 'ArrowLeft') {
+      } else if (event.key === "ArrowLeft") {
         const prevIndex = (currentIndex - 1 + images.length) % images.length;
         setSelectedImage(images[prevIndex]);
       }
     };
 
-    window.addEventListener('keydown', handleArrowKeys);
-    return () => window.removeEventListener('keydown', handleArrowKeys);
+    window.addEventListener("keydown", handleArrowKeys);
+    return () => window.removeEventListener("keydown", handleArrowKeys);
   }, [selectedImage, images]);
 
   const handleNextImage = () => {
     if (!selectedImage) return;
-    const currentIndex = images.findIndex(img => img.src === selectedImage.src);
+    const currentIndex = images.findIndex(
+      (img) => img.src === selectedImage.src,
+    );
     const nextIndex = (currentIndex + 1) % images.length;
     setSelectedImage(images[nextIndex]);
   };
 
   const handlePrevImage = () => {
     if (!selectedImage) return;
-    const currentIndex = images.findIndex(img => img.src === selectedImage.src);
+    const currentIndex = images.findIndex(
+      (img) => img.src === selectedImage.src,
+    );
     const prevIndex = (currentIndex - 1 + images.length) % images.length;
     setSelectedImage(images[prevIndex]);
   };
@@ -82,7 +86,7 @@ export default function GalleryPage() {
         subtitle="Bilder unserer vergangenen Events und Aktivitäten"
       >
         <div className="flex items-center justify-center min-h-[50vh]">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
         </div>
       </PageLayout>
     );
@@ -96,17 +100,17 @@ export default function GalleryPage() {
       >
         <div className="flex items-center justify-center min-h-[50vh]">
           <div className="text-center">
-            <svg 
-              className="w-16 h-16 text-muted-foreground mb-4 mx-auto" 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              className="w-16 h-16 text-muted-foreground mb-4 mx-auto"
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
               />
             </svg>
             <p className="text-muted-foreground">
@@ -125,8 +129,8 @@ export default function GalleryPage() {
     >
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {images.map((image, index) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className="group relative aspect-square overflow-hidden rounded-2xl shadow-xl backdrop-blur-lg bg-white/10 border border-white/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-white/10"
           >
             <Image
@@ -140,17 +144,29 @@ export default function GalleryPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                  <h3 className="text-lg font-semibold text-white">{image.alt}</h3>
+                  <h3 className="text-lg font-semibold text-white">
+                    {image.alt}
+                  </h3>
                 </div>
               </div>
             </div>
             <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <button 
+              <button
                 className="p-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors duration-200"
                 onClick={() => setSelectedImage(image)}
               >
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+                <svg
+                  className="w-5 h-5 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"
+                  />
                 </svg>
               </button>
             </div>
@@ -159,48 +175,78 @@ export default function GalleryPage() {
       </div>
 
       {selectedImage && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-lg"
           onClick={() => setSelectedImage(null)}
         >
           <div className="relative w-full h-full flex items-center justify-center p-4">
-            <button 
+            <button
               className="absolute top-4 right-4 p-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors duration-200 z-10"
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedImage(null);
               }}
             >
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
 
-            <button 
+            <button
               className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors duration-200 z-10"
               onClick={(e) => {
                 e.stopPropagation();
                 handlePrevImage();
               }}
             >
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             </button>
 
-            <button 
+            <button
               className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors duration-200 z-10"
               onClick={(e) => {
                 e.stopPropagation();
                 handleNextImage();
               }}
             >
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </button>
 
-            <div 
+            <div
               className="relative w-full max-w-7xl aspect-[4/3]"
               onClick={(e) => e.stopPropagation()}
             >
@@ -215,11 +261,13 @@ export default function GalleryPage() {
             </div>
 
             <div className="absolute bottom-4 left-0 right-0 text-center">
-              <h3 className="text-xl font-semibold text-white">{selectedImage.alt}</h3>
+              <h3 className="text-xl font-semibold text-white">
+                {selectedImage.alt}
+              </h3>
             </div>
           </div>
         </div>
       )}
     </PageLayout>
   );
-} 
+}

@@ -1,28 +1,29 @@
-import { Star, LucideIcon, Calendar, MapPin, Users, Clock, Ticket } from 'lucide-react';
+export type EventCategory = "csd" | "fetish" | "private" | "other";
 
-export type EventCategory = 'csd' | 'fetish' | 'private' | 'other';
-
-export const categoryStyles: Record<EventCategory, { bg: string; text: string; border: string }> = {
+export const categoryStyles: Record<
+  EventCategory,
+  { bg: string; text: string; border: string }
+> = {
   csd: {
-    bg: 'bg-rainbow-100 dark:bg-rainbow-900/30',
-    text: 'text-rainbow-800 dark:text-rainbow-200',
-    border: 'border-rainbow-200 dark:border-rainbow-800'
+    bg: "bg-rainbow-100 dark:bg-rainbow-900/30",
+    text: "text-rainbow-800 dark:text-rainbow-200",
+    border: "border-rainbow-200 dark:border-rainbow-800",
   },
   fetish: {
-    bg: 'bg-purple-100 dark:bg-purple-900/30',
-    text: 'text-purple-800 dark:text-purple-200',
-    border: 'border-purple-200 dark:border-purple-800'
+    bg: "bg-purple-100 dark:bg-purple-900/30",
+    text: "text-purple-800 dark:text-purple-200",
+    border: "border-purple-200 dark:border-purple-800",
   },
   private: {
-    bg: 'bg-blue-100 dark:bg-blue-900/30',
-    text: 'text-blue-800 dark:text-blue-200',
-    border: 'border-blue-200 dark:border-blue-800'
+    bg: "bg-blue-100 dark:bg-blue-900/30",
+    text: "text-blue-800 dark:text-blue-200",
+    border: "border-blue-200 dark:border-blue-800",
   },
   other: {
-    bg: 'bg-gray-100 dark:bg-gray-900/30',
-    text: 'text-gray-800 dark:text-gray-200',
-    border: 'border-gray-200 dark:border-gray-800'
-  }
+    bg: "bg-gray-100 dark:bg-gray-900/30",
+    text: "text-gray-800 dark:text-gray-200",
+    border: "border-gray-200 dark:border-gray-800",
+  },
 };
 
 export interface EventDate {
@@ -65,7 +66,7 @@ export const upcomingEvents: Event[] = [
   {
     id: "csd-hro",
     title: "CSD Rostock",
-    category: 'csd',
+    category: "csd",
     date: {
       day: 19,
       month: 7,
@@ -78,13 +79,13 @@ export const upcomingEvents: Event[] = [
     registration: {
       required: false,
       open: true,
-      link: ""
+      link: "",
     },
   },
   {
     id: "csd-hro-workshop",
     title: "Einsteiger-Workshop Fetisch",
-    category: 'other',
+    category: "other",
     date: {
       month: 7,
       year: 2025,
@@ -94,44 +95,50 @@ export const upcomingEvents: Event[] = [
     isExternal: false,
     registration: {
       required: true,
-      open: false
+      open: false,
     },
   },
 ];
 
 export function getTodayEvent(): Event | null {
   const today = new Date();
-  const todayString = today.toLocaleDateString('de-DE', {
-    day: 'numeric',
-    month: 'numeric',
-    year: 'numeric',
+  const todayString = today.toLocaleDateString("de-DE", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
   });
 
-  return upcomingEvents.find(event => {
-    if (!event.date.day || !event.date.month) return false;
-    const eventDate = new Date(event.date.year, event.date.month - 1, event.date.day);
-    const eventDateString = eventDate.toLocaleDateString('de-DE', {
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric',
-    });
-    return eventDateString === todayString;
-  }) || null;
+  return (
+    upcomingEvents.find((event) => {
+      if (!event.date.day || !event.date.month) return false;
+      const eventDate = new Date(
+        event.date.year,
+        event.date.month - 1,
+        event.date.day,
+      );
+      const eventDateString = eventDate.toLocaleDateString("de-DE", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+      });
+      return eventDateString === todayString;
+    }) || null
+  );
 }
 
 export function formatEventDate(date: EventDate): string {
   const parts: string[] = [];
 
   if (date.day) {
-    parts.push(date.day.toString().padStart(2, '0'));
+    parts.push(date.day.toString().padStart(2, "0"));
   }
   if (date.month) {
-    parts.push(date.month.toString().padStart(2, '0'));
+    parts.push(date.month.toString().padStart(2, "0"));
   }
   parts.push(date.year.toString());
 
-  let formattedDate = parts.join('.');
-  
+  let formattedDate = parts.join(".");
+
   // Wenn nur das Jahr bekannt ist
   if (!date.month) {
     formattedDate = `${date.year} (Termin wird noch bekannt gegeben)`;
@@ -162,12 +169,12 @@ export function formatRegistrationStatus(event: Event): string {
     const opensAt = new Date(
       event.registration.opensAt.year,
       event.registration.opensAt.month - 1,
-      event.registration.opensAt.day
+      event.registration.opensAt.day,
     );
-    return `Anmeldung ab ${opensAt.toLocaleDateString('de-DE', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
+    return `Anmeldung ab ${opensAt.toLocaleDateString("de-DE", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
     })}`;
   }
 
@@ -177,10 +184,10 @@ export function formatRegistrationStatus(event: Event): string {
 export function getUpcomingEvents(includeTBA: boolean = false): Event[] {
   const today = new Date();
   return upcomingEvents
-    .filter(event => {
+    .filter((event) => {
       // Wenn nur das Jahr bekannt ist
       if (!event.date.month) return includeTBA;
-      
+
       // Wenn Monat und Jahr bekannt sind
       if (!event.date.day) {
         const eventDate = new Date(event.date.year, event.date.month - 1, 1);
@@ -188,7 +195,11 @@ export function getUpcomingEvents(includeTBA: boolean = false): Event[] {
       }
 
       // Wenn vollständiges Datum bekannt ist
-      const eventDate = new Date(event.date.year, event.date.month - 1, event.date.day);
+      const eventDate = new Date(
+        event.date.year,
+        event.date.month - 1,
+        event.date.day,
+      );
       return eventDate >= today;
     })
     .sort((a, b) => {
@@ -206,8 +217,18 @@ export function getUpcomingEvents(includeTBA: boolean = false): Event[] {
 
 function getMonthName(month: number): string {
   const months = [
-    'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
-    'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
+    "Januar",
+    "Februar",
+    "März",
+    "April",
+    "Mai",
+    "Juni",
+    "Juli",
+    "August",
+    "September",
+    "Oktober",
+    "November",
+    "Dezember",
   ];
   return months[month - 1];
-} 
+}

@@ -7,13 +7,15 @@ import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Navigation } from "@/components/composites/Navigation";
-import { Send, Instagram } from 'lucide-react';
-import { SITE } from '@/config/constants';
-import {Tooltip} from "@heroui/tooltip";
+import { Send, Instagram } from "lucide-react";
+import { SITE } from "@/config/constants";
+import { Tooltip } from "@heroui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const viewport: Viewport = { /* … */ };
+export const viewport: Viewport = {
+  /* … */
+};
 
 export default function RootLayout({
   children,
@@ -43,20 +45,30 @@ export default function RootLayout({
                 <div className="container mx-auto px-4">
                   <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                     <div className="text-sm text-muted-foreground">
-                      © {new Date().getFullYear()} {SITE.name}. Alle Rechte vorbehalten.
+                      © {new Date().getFullYear()} {SITE.name}. Alle Rechte
+                      vorbehalten.
                     </div>
                     <div className="flex flex-wrap justify-center gap-6">
-                      <a href="/legal" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                      <a
+                        href="/legal"
+                        className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                      >
                         Impressum
                       </a>
-                      <a href="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                      <a
+                        href="/privacy"
+                        className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                      >
                         Datenschutz
                       </a>
-                      <Tooltip content={`Folge uns auf Instagram: @${SITE.social.instagram.username}`} showArrow={true}>
-                        <a 
+                      <Tooltip
+                        content={`Folge uns auf Instagram: @${SITE.social.instagram.username}`}
+                        showArrow={true}
+                      >
+                        <a
                           href={SITE.social.instagram.url}
-                          target="_blank" 
-                          rel="noopener noreferrer" 
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="text-muted-foreground hover:text-primary transition-colors"
                           aria-label="Instagram"
                         >
@@ -64,10 +76,14 @@ export default function RootLayout({
                         </a>
                       </Tooltip>
 
-                      <Tooltip content={`Folge uns auf Telegram: @${SITE.social.telegram.username}`} showArrow={true}>
-                        <a href={SITE.social.telegram.url}
-                          target="_blank" 
-                          rel="noopener noreferrer" 
+                      <Tooltip
+                        content={`Folge uns auf Telegram: @${SITE.social.telegram.username}`}
+                        showArrow={true}
+                      >
+                        <a
+                          href={SITE.social.telegram.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="text-muted-foreground hover:text-primary transition-colors"
                           aria-label="Telegram"
                         >

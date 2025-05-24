@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { gradients } from "@/config/gradients";
-import type { FAQ } from '@/config/faq';
-import { ChevronDown } from 'lucide-react';
+import type { FAQ } from "@/config/faq";
+import { ChevronDown } from "lucide-react";
 
 interface FAQProps {
   faqs: FAQ[];
@@ -34,32 +34,29 @@ export function FAQ({ faqs, className }: FAQProps) {
                   <faq.icon className="w-5 h-5 text-primary" />
                 </div>
               </div>
-              <h3 className={cn(
-                "text-lg font-semibold",
-                gradients.title.primary
-              )}>
+              <h3
+                className={cn("text-lg font-semibold", gradients.title.primary)}
+              >
                 {faq.question}
               </h3>
             </div>
             <ChevronDown
               className={cn(
                 "w-5 h-5 text-foreground/50 transition-transform duration-300",
-                openId === faq.id && "transform rotate-180"
+                openId === faq.id && "transform rotate-180",
               )}
             />
           </button>
           <div
             className={cn(
               "overflow-hidden transition-all duration-300",
-              openId === faq.id ? "max-h-96" : "max-h-0"
+              openId === faq.id ? "max-h-96" : "max-h-0",
             )}
           >
-            <div className="p-6 pt-0 text-foreground/70">
-              {faq.answer}
-            </div>
+            <div className="p-6 pt-0 text-foreground/70">{faq.answer}</div>
           </div>
         </div>
       ))}
     </div>
   );
-} 
+}

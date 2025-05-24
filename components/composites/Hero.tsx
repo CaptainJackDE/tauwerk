@@ -1,9 +1,9 @@
-import { HeroSlider } from './HeroSlider';
-import { Button } from '../ui/button';
-import { gradients } from '@/config/gradients';
+import { HeroSlider } from "./HeroSlider";
+import { Button } from "../ui/button";
+import { gradients } from "@/config/gradients";
 import { getTodayEvent, formatEventDate } from "@/config/events";
 import { Calendar } from "lucide-react";
-import { SITE } from '@/config/constants';
+import { SITE } from "@/config/constants";
 
 export function Hero() {
   const todayEvent = getTodayEvent();
@@ -13,11 +13,13 @@ export function Hero() {
       <div className="absolute inset-0">
         <HeroSlider />
       </div>
-      
+
       <div className="relative z-20 w-full max-w-5xl mx-auto px-4">
         <div className="backdrop-blur-2xl bg-black/10 rounded-3xl p-12 md:p-16 border border-white/10 shadow-2xl">
           <div className="space-y-8">
-            <h1 className={`text-6xl md:text-8xl font-bold ${gradients.title.primary} ${gradients.title.hover} ${gradients.title.animation}`}>
+            <h1
+              className={`text-6xl md:text-8xl font-bold ${gradients.title.primary} ${gradients.title.hover} ${gradients.title.animation}`}
+            >
               {SITE.name}
             </h1>
             <div className="space-y-4">
@@ -37,7 +39,7 @@ export function Hero() {
                   Mehr erfahren
                 </Button>
               </div>
-              
+
               {todayEvent && (
                 <div className="flex items-center justify-center gap-3 text-sm text-foreground/70">
                   <Calendar className="w-4 h-4 text-primary" />
@@ -60,4 +62,4 @@ export function Hero() {
       </div>
     </section>
   );
-} 
+}

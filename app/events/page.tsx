@@ -3,7 +3,7 @@ import { gradients } from "@/config/gradients";
 import { cn } from "@/lib/utils";
 import { Calendar, MapPin, UserCheck, UserX, Euro } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PageLayout } from '@/components/composites/PageLayout';
+import { PageLayout } from "@/components/composites/PageLayout";
 import Link from "next/link";
 
 interface EventCardProps {
@@ -30,7 +30,16 @@ interface EventCardProps {
   className?: string;
 }
 
-const EventCard = ({ title, date, location, description, isExternal, registration, price, className }: EventCardProps) => {
+const EventCard = ({
+  title,
+  date,
+  location,
+  description,
+  isExternal,
+  registration,
+  price,
+  className,
+}: EventCardProps) => {
   const getRegistrationStatus = () => {
     if (!registration.required) {
       return "Keine Anmeldung erforderlich";
@@ -44,12 +53,12 @@ const EventCard = ({ title, date, location, description, isExternal, registratio
       const opensAt = new Date(
         registration.opensAt.year,
         registration.opensAt.month - 1,
-        registration.opensAt.day
+        registration.opensAt.day,
       );
-      return `Anmeldung ab ${opensAt.toLocaleDateString('de-DE', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
+      return `Anmeldung ab ${opensAt.toLocaleDateString("de-DE", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
       })}`;
     }
 
@@ -59,12 +68,14 @@ const EventCard = ({ title, date, location, description, isExternal, registratio
   const registrationStatus = getRegistrationStatus();
 
   return (
-    <div className={cn(
-      "group relative p-8 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10",
-      "hover:bg-white/10 hover:border-white/20 hover:shadow-2xl hover:shadow-primary/5",
-      "hover:-translate-y-1 transition-all duration-300",
-      className
-    )}>
+    <div
+      className={cn(
+        "group relative p-8 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10",
+        "hover:bg-white/10 hover:border-white/20 hover:shadow-2xl hover:shadow-primary/5",
+        "hover:-translate-y-1 transition-all duration-300",
+        className,
+      )}
+    >
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <div className="relative space-y-6">
         <div className="flex items-center gap-3">
@@ -76,21 +87,18 @@ const EventCard = ({ title, date, location, description, isExternal, registratio
           </div>
           <div className="flex flex-col">
             <span className="text-lg text-foreground/70">
-              {date.split('(')[0].trim()}
+              {date.split("(")[0].trim()}
             </span>
-            {date.includes('(') && (
+            {date.includes("(") && (
               <span className="text-sm text-foreground/50">
-                {date.split('(')[1].replace(')', '')}
+                {date.split("(")[1].replace(")", "")}
               </span>
             )}
           </div>
         </div>
-        
+
         <div className="space-y-2">
-          <h3 className={cn(
-            "text-2xl font-semibold",
-            gradients.title.primary
-          )}>
+          <h3 className={cn("text-2xl font-semibold", gradients.title.primary)}>
             {title}
           </h3>
           {isExternal && (
@@ -99,10 +107,8 @@ const EventCard = ({ title, date, location, description, isExternal, registratio
             </p>
           )}
         </div>
-        
-        <p className="text-foreground/70 text-base">
-          {description}
-        </p>
+
+        <p className="text-foreground/70 text-base">{description}</p>
 
         <div className="flex items-center gap-3 text-foreground/70">
           <MapPin className="w-4 h-4" />
@@ -137,13 +143,8 @@ const EventCard = ({ title, date, location, description, isExternal, registratio
         )}
 
         {registration.required && registration.open && registration.link && (
-          <Link 
-            href={registration.link}
-            className="block w-full"
-          >
-            <Button
-              className="w-full bg-gradient-to-r from-primary/20 to-secondary/20 hover:from-primary/30 hover:to-secondary/30 text-foreground border border-white/10 hover:border-white/20 transition-all duration-300"
-            >
+          <Link href={registration.link} className="block w-full">
+            <Button className="w-full bg-gradient-to-r from-primary/20 to-secondary/20 hover:from-primary/30 hover:to-secondary/30 text-foreground border border-white/10 hover:border-white/20 transition-all duration-300">
               Jetzt anmelden
             </Button>
           </Link>
@@ -181,49 +182,63 @@ export default function EventsPage() {
   });
 
   // Gruppiere Events nach Jahr und Monat
-  const eventsByYearAndMonth = sortedEvents.reduce((acc, event) => {
-    const year = event.date.year;
-    const month = event.date.month || 13; // 13 für Events ohne Monat
+  const eventsByYearAndMonth = sortedEvents.reduce(
+    (acc, event) => {
+      const year = event.date.year;
+      const month = event.date.month || 13; // 13 für Events ohne Monat
 
-    if (!acc[year]) {
-      acc[year] = {};
-    }
-    if (!acc[year][month]) {
-      acc[year][month] = [];
-    }
-    acc[year][month].push(event);
-    return acc;
-  }, {} as Record<number, Record<number, typeof sortedEvents>>);
+      if (!acc[year]) {
+        acc[year] = {};
+      }
+      if (!acc[year][month]) {
+        acc[year][month] = [];
+      }
+      acc[year][month].push(event);
+      return acc;
+    },
+    {} as Record<number, Record<number, typeof sortedEvents>>,
+  );
 
   function getMonthName(month: number): string {
     if (month === 13) return "Termin wird noch bekannt gegeben";
     const months = [
-      'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
-      'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
+      "Januar",
+      "Februar",
+      "März",
+      "April",
+      "Mai",
+      "Juni",
+      "Juli",
+      "August",
+      "September",
+      "Oktober",
+      "November",
+      "Dezember",
     ];
     return months[month - 1];
   }
 
   return (
-    <PageLayout 
+    <PageLayout
       title="Unsere Events"
       subtitle="Entdecke unsere kommenden Veranstaltungen und sei dabei!"
     >
       <div className="space-y-16">
         {Object.entries(eventsByYearAndMonth).map(([year, months]) => (
           <div key={year} className="space-y-12">
-            <h2 className={cn(
-              "text-3xl font-semibold",
-              gradients.title.primary
-            )}>
+            <h2
+              className={cn("text-3xl font-semibold", gradients.title.primary)}
+            >
               {year}
             </h2>
             {Object.entries(months).map(([month, events]) => (
               <div key={`${year}-${month}`} className="space-y-6">
-                <h3 className={cn(
-                  "text-2xl font-medium",
-                  gradients.title.primary
-                )}>
+                <h3
+                  className={cn(
+                    "text-2xl font-medium",
+                    gradients.title.primary,
+                  )}
+                >
                   {getMonthName(Number(month))}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -248,4 +263,4 @@ export default function EventsPage() {
       </div>
     </PageLayout>
   );
-} 
+}

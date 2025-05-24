@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from 'react';
-import Link from 'next/link'
-import { gradients } from '@/config/gradients'
-import { NAVIGATION, SITE } from '@/config/constants'
-import { Menu, X } from 'lucide-react';
+import { useState } from "react";
+import Link from "next/link";
+import { gradients } from "@/config/gradients";
+import { NAVIGATION, SITE } from "@/config/constants";
+import { Menu, X } from "lucide-react";
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -54,7 +54,7 @@ export function Navigation() {
         </div>
 
         {/* Mobile Menu */}
-        <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
+        <div className={`md:hidden ${isMenuOpen ? "block" : "hidden"}`}>
           <div className="px-2 pt-2 pb-3 space-y-1 bg-black/40 backdrop-blur-md border-b border-white/10">
             {NAVIGATION.items.map((item) => (
               <Link
@@ -70,5 +70,5 @@ export function Navigation() {
         </div>
       </div>
     </nav>
-  )
+  );
 }
