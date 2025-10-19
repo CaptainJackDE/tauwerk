@@ -164,21 +164,29 @@ For other platforms (Netlify, Railway, etc.):
 
 ### Gallery Setup
 
-To populate the gallery:
+The gallery automatically discovers images from the `public/gallery/` folder:
 
 1. **Add images to gallery folder**
    ```bash
    # Create gallery directory if it doesn't exist
    mkdir -p public/gallery
    
-   # Add your images (supported: .jpg, .jpeg, .png, .gif, .webp)
+   # Add your images (supported: .jpg, .jpeg, .png, .gif, .webp, .avif)
    cp your-images/* public/gallery/
    ```
 
-2. **Image requirements**
-   - Supported formats: JPG, JPEG, PNG, GIF, WebP
-   - Files are automatically discovered by the API
-   - Filenames become alt text (without extension)
+2. **How it works**
+   - **Node.js Runtime**: API uses `runtime = 'nodejs'` for fs support on Vercel
+   - **Automatic Discovery**: Images are dynamically read from the folder
+   - **Smart Alt Text**: Filenames are converted to readable alt text
+   - **Sorting**: Images sorted by modification date (newest first)
+
+3. **Supported Formats**
+   - JPG, JPEG, PNG, GIF, WebP, AVIF
+   - Files are automatically discovered and optimized
+   - Alt text generated from filename (underscores/dashes become spaces)
+
+**Note**: The API now uses Node.js runtime on Vercel to enable filesystem access. This ensures the gallery works automatically without manual configuration.
 
 ### Content Management
 
@@ -194,6 +202,25 @@ Update site content by editing configuration files:
 - Images are automatically optimized with Next.js Image component
 - Vercel Analytics included for performance monitoring
 - Turbopack for faster development builds
+
+## 🐛 Troubleshooting
+
+### Gallery shows "Oops" error on Vercel but works locally
+
+**Problem**: Edge Runtime limitations with filesystem access.
+
+**Solution**: The gallery now uses Node.js runtime (`export const runtime = 'nodejs'`) which enables filesystem access on Vercel.
+
+**How it works**:
+- **Local Development**: Direct filesystem access through Node.js
+- **Vercel Production**: Node.js runtime maintains filesystem capability
+- **Performance**: Images are cached and sorted automatically
+- **Auto-Discovery**: Simply add images to `public/gallery/` folder
+
+**Alternative Solutions** (if Node.js runtime causes issues):
+1. Use the build-time generation script: `npm run gallery:generate`
+2. Switch to the cached version in `route-cached.ts`
+3. Use external image hosting (Cloudinary, etc.)
 
 ## 📝 License
 

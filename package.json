@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix"
+    "lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix",
+    "gallery:generate": "node scripts/generate-gallery.js",
+    "prebuild": "npm run gallery:generate"
   },
   "dependencies": {
     "@heroui/button": "2.2.19",
