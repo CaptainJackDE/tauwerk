@@ -1,4 +1,6 @@
-import { upcomingEvents, formatEventDate } from "@/config/events";
+import React from "react";
+import { formatEventDate, type Event } from "@/config/events";
+import { fetchEvents, sortEventsByDate } from "@/lib/events-loader";
 import { gradients } from "@/config/gradients";
 import { cn } from "@/lib/utils";
 import { Calendar, MapPin } from "lucide-react";
@@ -72,31 +74,17 @@ const HomeEventCard = ({
 };
 
 export function UpcomingEvents() {
-  // Sortiere Events nach Datum
-  const sortedEvents = [...upcomingEvents].sort((a, b) => {
-    if (a.date.year !== b.date.year) {
-      return a.date.year - b.date.year;
-    }
+  const [events, setEvents] = React.useState<Event[]>([]);
 
-    // Wenn Jahr gleich ist, sortiere nach Monat
-    if (a.date.month && b.date.month) {
-      if (a.date.month !== b.date.month) {
-        return a.date.month - b.date.month;
-      }
-      // Wenn Monat gleich ist, sortiere nach Tag
-      if (a.date.day && b.date.day) {
-        return a.date.day - b.date.day;
-      }
-      // Wenn ein Event keinen Tag hat, kommt es später
-      if (!a.date.day) return 1;
-      if (!b.date.day) return -1;
-    }
-    // Wenn ein Event keinen Monat hat, kommt es später
-    if (!a.date.month) return 1;
-    if (!b.date.month) return -1;
-
-    return 0;
-  });
+  React.useEffect(() => {
+    let mounted = true;
+    fetchEvents().then((data) => {
+      if (mounted) setEvents(sortEventsByDate(data));
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
     <section className="py-24">
@@ -113,7 +101,7 @@ export function UpcomingEvents() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {sortedEvents.slice(0, 3).map((event) => (
+          {events.slice(0, 3).map((event) => (
             <Link
               key={event.id}
               href={`/events#event-${event.id}`}

@@ -188,6 +188,33 @@ The gallery automatically discovers images from the `public/gallery/` folder:
 
 **Note**: The API now uses Node.js runtime on Vercel to enable filesystem access. This ensures the gallery works automatically without manual configuration.
 
+### Events Setup (Dynamic)
+
+Events can be edited in real-time via a JSON file, either locally or from a remote server.
+
+1. Local JSON (default)
+   - Edit `public/events.json`
+   - The API route `/api/events` reads from this file
+
+2. Remote JSON (optional)
+   - Host a JSON at a URL returning either `{ events: [...] }` or `[...]`
+   - Set environment variable:
+     - `NEXT_PUBLIC_EVENTS_URL=https://example.com/events.json`
+   - The API will fetch remotely with `cache: 'no-store'` for real-time updates
+
+3. Consumption in UI
+   - Components use `lib/events-loader.ts` to fetch events dynamically
+   - Existing formatting functions (e.g., `formatEventDate`) are reused
+
+4. Types and Utilities
+   - Event TypeScript interfaces remain defined in `config/events.ts`
+   - Sorting helper in `lib/events-loader.ts` ensures consistent ordering
+
+5. Notes
+   - Local JSON is served from `public/events.json` and is cache-bypassed in API
+   - Remote URL has priority when `NEXT_PUBLIC_EVENTS_URL` is set
+   - No server restart needed for remote updates
+
 ### Content Management
 
 Update site content by editing configuration files:

@@ -1,0 +1,25 @@
+{
+  "events": [
+    {
+      "id": "csd-hro",
+      "title": "CSD Rostock",
+      "category": "csd",
+      "date": { "day": 19, "month": 7, "year": 2025, "time": "12:00" },
+      "location": "Neuer Markt, Rostock",
+      "description": "",
+      "isExternal": true,
+      "registration": { "required": false, "open": true, "link": "" },
+      "price": null
+    },
+    {
+      "id": "csd-hro-workshop",
+      "title": "Einsteiger-Workshop Fetisch",
+      "category": "other",
+      "date": { "month": 7, "year": 2025 },
+      "location": "Planbar, Rostock",
+      "description": "Beschreibung",
+      "isExternal": false,
+      "registration": { "required": true, "open": false }
+    }
+  ]
+}

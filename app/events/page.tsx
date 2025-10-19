@@ -1,4 +1,6 @@
-import { upcomingEvents, formatEventDate } from "@/config/events";
+import React from "react";
+import { formatEventDate, type Event } from "@/config/events";
+import { fetchEvents, sortEventsByDate } from "@/lib/events-loader";
 import { gradients } from "@/config/gradients";
 import { cn } from "@/lib/utils";
 import { Calendar, MapPin, UserCheck, UserX, Euro } from "lucide-react";
@@ -155,7 +157,19 @@ const EventCard = ({
 };
 
 export default function EventsPage() {
-  const sortedEvents = [...upcomingEvents].sort((a, b) => {
+  const [events, setEvents] = React.useState<Event[]>([]);
+
+  React.useEffect(() => {
+    let mounted = true;
+    fetchEvents().then((data) => {
+      if (mounted) setEvents(sortEventsByDate(data));
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const sortedEvents = [...events].sort((a, b) => {
     // Sortiere nach Jahr
     if (a.date.year !== b.date.year) {
       return a.date.year - b.date.year;

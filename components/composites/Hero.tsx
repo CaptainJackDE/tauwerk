@@ -1,12 +1,41 @@
+import React from "react";
 import { HeroSlider } from "./HeroSlider";
 import { Button } from "../ui/button";
 import { gradients } from "@/config/gradients";
-import { getTodayEvent, formatEventDate } from "@/config/events";
+import { formatEventDate, type Event } from "@/config/events";
+import { fetchEvents } from "@/lib/events-loader";
 import { Calendar } from "lucide-react";
 import { SITE } from "@/config/constants";
 
 export function Hero() {
-  const todayEvent = getTodayEvent();
+  const [todayEvent, setTodayEvent] = React.useState<Event | null>(null);
+
+  React.useEffect(() => {
+    fetchEvents().then((events) => {
+      const today = new Date();
+      const todayString = today.toLocaleDateString("de-DE", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+      });
+
+      const match = events.find((event) => {
+        if (!event.date.day || !event.date.month) return false;
+        const eventDate = new Date(
+          event.date.year,
+          (event.date.month as number) - 1,
+          event.date.day as number,
+        );
+        const eventDateString = eventDate.toLocaleDateString("de-DE", {
+          day: "numeric",
+          month: "numeric",
+          year: "numeric",
+        });
+        return eventDateString === todayString;
+      });
+      setTodayEvent(match || null);
+    });
+  }, []);
 
   return (
     <section className="relative h-screen w-full flex items-center justify-center text-center overflow-hidden">
