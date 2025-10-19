@@ -1,27 +1,30 @@
 # Tauwerk - Modern Web Application
 
-A modern, responsive web application built with Next.js, Tailwind CSS, and Lucide icons. This project provides a beautiful and functional user interface with various features for managing appointments, preferences, and user interactions.
+A modern, responsive web application built with Next.js 15, featuring glassmorphic UI design and blue gradient theming. This project serves as a website for Tauwerk, a fetish community club in Mecklenburg-Vorpommern, providing event management, gallery features, and community information.
 
 ## 🚀 Features
 
 - **Modern Tech Stack**
-  - Next.js 14 with App Router
-  - Tailwind CSS for utility-first styling
+  - Next.js 15 with App Router and Turbopack
+  - TypeScript with strict typing
+  - Tailwind CSS with custom glassmorphic design system
   - Lucide-React icons
-  - Dark Mode support via next-themes
-  - Glassmorphic UI elements
+  - Dark/Light mode support via next-themes
+  - Hybrid UI library (HeroUI + custom shadcn/ui components)
 
 - **Core Functionality**
-  - 🗓️ Appointments management with upcoming and past events
-  - 📊 Comprehensive stats section for user data
-  - 🔗 Social media integration with glassmorphic cards
-  - 💥 Custom error handling with animated pages
+  - 🗓️ Dynamic event management with flexible date handling
+  - 🖼️ File-based gallery system with lightbox viewer
+  - � Responsive glassmorphic UI with blue gradient theming
+  - � SEO-optimized pages with German content
+  - 🎨 Configuration-driven content management
+  - � Component variants using class-variance-authority (CVA)
 
 ## 📦 Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/tauwerk.git
+   git clone https://github.com/CaptainJackDE/tauwerk.git
    cd tauwerk
    ```
 
@@ -34,39 +37,163 @@ A modern, responsive web application built with Next.js, Tailwind CSS, and Lucid
    pnpm install
    ```
 
-3. **Set up environment variables**
+3. **Run the development server**
    ```bash
-   cp .env.example .env.local
-   ```
-   Edit `.env.local` with your configuration values.
-
-4. **Run the development server**
-   ```bash
-   npm run dev
+   npm run dev      # Starts dev server with Turbopack
    # or
    yarn dev
    # or
    pnpm dev
    ```
 
-5. **Open [http://localhost:3000](http://localhost:3000) in your browser**
+4. **Open [http://localhost:3000](http://localhost:3000) in your browser**
+
+## 🛠️ Development Commands
+
+```bash
+npm run dev          # Development server with Turbopack
+npm run build        # Production build
+npm run start        # Start production server
+npm run lint         # ESLint with auto-fix
+```
+
+## 🎨 Design System
+
+The project uses a configuration-driven design system with:
+- **Glassmorphic Components**: `backdrop-blur-2xl`, `bg-black/10`, `border-white/10`
+- **Blue Gradient System**: All gradients centralized in `config/gradients.ts`
+- **Component Variants**: CVA pattern for consistent styling (see `components/ui/button.tsx`)
+- **German Language**: All content in German (no internationalization)
 
 ## 🏗️ Project Structure
 
 ```
 tauwerk/
-├── app/                 # Next.js app directory
-├── components/         # Reusable React components
-├── lib/               # Utility functions and configurations
-├── public/            # Static assets
-└── styles/            # Global styles and Tailwind config
+├── app/                     # Next.js 15 app directory (App Router)
+│   ├── (routes)/           # Route groups for pages
+│   ├── api/                # API routes (gallery, etc.)
+│   ├── globals.css         # Global styles and CSS variables
+│   ├── layout.tsx          # Root layout with providers
+│   └── page.tsx            # Homepage
+├── components/             # React components
+│   ├── ui/                 # Design system primitives (Button, Input, etc.)
+│   ├── composites/         # Business logic components (Hero, Navigation, etc.)
+│   └── providers/          # Context providers (ThemeProvider)
+├── config/                 # Configuration and content
+│   ├── constants.ts        # Site metadata and navigation
+│   ├── events.ts           # Event data and utilities
+│   ├── gradients.ts        # Design system gradient definitions
+│   └── faq.ts              # FAQ content
+├── lib/                    # Utility functions
+│   └── utils.ts            # className merging and helpers
+├── public/                 # Static assets
+│   ├── gallery/            # Dynamic gallery images
+│   └── images/             # Static images and icons
+└── types/                  # TypeScript type definitions
+    └── index.ts            # Shared interfaces and types
 ```
 
 ## 🛠️ Development
 
-- **Code Style**: Follow the existing code style and use ESLint for consistency
-- **Commits**: Use conventional commits format
-- **Branches**: Create feature branches from `main`
+### Key Technologies
+- **Framework**: Next.js 15 with App Router
+- **Styling**: Tailwind CSS with custom configuration
+- **UI Components**: HeroUI (@heroui/*) + custom shadcn/ui components
+- **Icons**: Lucide React exclusively
+- **Animations**: Framer Motion for complex interactions
+- **Type Safety**: TypeScript with strict configuration
+- **Analytics**: Vercel Analytics integration
+
+### Development Patterns
+- **Configuration-Driven**: Content managed in `config/` files
+- **Component Architecture**: Separation between UI primitives and business composites
+- **Utility-First**: Use `cn()` utility for className merging
+- **German-First**: All UI text in German language
+- **File-Based APIs**: Gallery images served from `public/gallery/`
+
+### Code Style
+- Follow existing patterns and use ESLint for consistency
+- Use TypeScript interfaces for all data structures
+- Prefer configuration over hardcoded values
+- Use absolute imports with `@/` path aliases
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+This project is optimized for deployment on Vercel:
+
+1. **Deploy to Vercel**
+   ```bash
+   # Install Vercel CLI
+   npm i -g vercel
+   
+   # Deploy from project root
+   vercel
+   ```
+
+2. **Automatic Deployments**
+   - Connect your GitHub repository to Vercel
+   - Automatic deployments on push to main branch
+   - Preview deployments for pull requests
+
+3. **Environment Configuration**
+   - No environment variables required for basic functionality
+   - Vercel Analytics automatically configured
+
+### Manual Deployment
+
+For other platforms (Netlify, Railway, etc.):
+
+1. **Build the project**
+   ```bash
+   npm run build
+   ```
+
+2. **Start production server**
+   ```bash
+   npm start
+   ```
+
+3. **Static Export (optional)**
+   ```bash
+   # Add to next.config.js: output: 'export'
+   npm run build
+   # Deploy the 'out' directory
+   ```
+
+### Gallery Setup
+
+To populate the gallery:
+
+1. **Add images to gallery folder**
+   ```bash
+   # Create gallery directory if it doesn't exist
+   mkdir -p public/gallery
+   
+   # Add your images (supported: .jpg, .jpeg, .png, .gif, .webp)
+   cp your-images/* public/gallery/
+   ```
+
+2. **Image requirements**
+   - Supported formats: JPG, JPEG, PNG, GIF, WebP
+   - Files are automatically discovered by the API
+   - Filenames become alt text (without extension)
+
+### Content Management
+
+Update site content by editing configuration files:
+
+- **Site info**: `config/constants.ts`
+- **Events**: `config/events.ts`
+- **FAQ**: `config/faq.ts`
+- **Design**: `config/gradients.ts`
+
+### Performance Optimization
+
+- Images are automatically optimized with Next.js Image component
+- Vercel Analytics included for performance monitoring
+- Turbopack for faster development builds
 
 ## 📝 License
 
@@ -82,8 +209,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📧 Contact
 
-For any questions or concerns, please open an issue in the repository.
+For questions about the Tauwerk community, visit the website or reach out via:
+- Instagram: [@tauwerk_mv](https://instagram.com/tauwerk_mv)
+- Telegram: [@tauwerk](https://t.me/tauwerk)
+- Email: info@tauwerk.de
+
+For technical issues with this website, please open an issue in the repository.
 
 ---
 
-Built with ❤️ using Next.js and Tailwind CSS
+Built with ❤️ in Mecklenburg-Vorpommern using Next.js 15 and Tailwind CSS
