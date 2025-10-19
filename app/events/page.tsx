@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { formatEventDate, type Event } from "@/config/events";
 import { fetchEvents, sortEventsByDate } from "@/lib/events-loader";
