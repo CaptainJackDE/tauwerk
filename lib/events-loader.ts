@@ -75,3 +75,30 @@ export function sortEventsByDate(events: Event[]): Event[] {
     return 0;
   });
 }
+
+export function getNextUpcomingEvent(events: Event[]): Event | null {
+  const now = new Date();
+  now.setHours(0, 0, 0, 0); // Auf Mitternacht setzen für Tagesvergleich
+
+  // Filtere nur featured Events
+  const featuredEvents = events.filter(event => event.featured === true);
+  const sorted = sortEventsByDate(featuredEvents);
+
+  for (const event of sorted) {
+    const { year, month, day } = event.date;
+    
+    if (!month || !day) {
+      // Events ohne genaues Datum überspringen
+      continue;
+    }
+
+    const eventDate = new Date(year, month - 1, day);
+    eventDate.setHours(0, 0, 0, 0);
+
+    if (eventDate >= now) {
+      return event;
+    }
+  }
+
+  return null;
+}

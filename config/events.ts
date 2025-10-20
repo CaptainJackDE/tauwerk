@@ -58,6 +58,7 @@ export interface Event {
   location: string;
   description: string;
   isExternal?: boolean;
+  featured?: boolean;
   registration: EventRegistration;
   price?: EventPrice;
 }

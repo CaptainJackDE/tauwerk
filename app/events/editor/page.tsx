@@ -159,7 +159,14 @@ export default function EventsEditorPage() {
     <div className="p-5 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 transition">
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1">
-          <h3 className={cn("text-lg font-semibold", gradients.title.primary)}>{ev.title || "(Ohne Titel)"}</h3>
+          <div className="flex items-center gap-2">
+            <h3 className={cn("text-lg font-semibold", gradients.title.primary)}>{ev.title || "(Ohne Titel)"}</h3>
+            {ev.featured && (
+              <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-gradient-to-r from-primary/30 to-secondary/30 border border-primary/40">
+                Featured
+              </span>
+            )}
+          </div>
           <p className="text-sm text-foreground/70">
             {ev.category} • {ev.location || "Ort folgt"}
           </p>
@@ -315,6 +322,24 @@ export default function EventsEditorPage() {
                       onClick={() => setDraft({ ...draft, registration: { ...draft.registration, open: !draft.registration.open } })}
                     >
                       {draft.registration.open ? "Ja" : "Nein"}
+                    </Button>
+                  </div>
+                  <div>
+                    {label("Externes Event?")}
+                    <Button
+                      variant={draft.isExternal ? "primary" : "outline"}
+                      onClick={() => setDraft({ ...draft, isExternal: !draft.isExternal })}
+                    >
+                      {draft.isExternal ? "Ja" : "Nein"}
+                    </Button>
+                  </div>
+                  <div>
+                    {label("Featured (Countdown auf Startseite)?")}
+                    <Button
+                      variant={draft.featured ? "primary" : "outline"}
+                      onClick={() => setDraft({ ...draft, featured: !draft.featured })}
+                    >
+                      {draft.featured ? "Ja" : "Nein"}
                     </Button>
                   </div>
                   <div>

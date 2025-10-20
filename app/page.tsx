@@ -9,16 +9,27 @@ import { AboutPreview } from "@/components/composites/AboutPreview";
 import { ContactCTA } from "@/components/composites/ContactCTA";
 import { Background } from "@/components/composites/Background";
 import { FAQ } from "@/components/composites/FAQ";
+import { EventCountdown } from "@/components/composites/EventCountdown";
 import { faqs } from "@/config/faq";
 import { cn } from "@/lib/utils";
 import { gradients } from "@/config/gradients";
+import { fetchEvents, getNextUpcomingEvent } from "@/lib/events-loader";
+import type { Event } from "@/config/events";
 
 export default function Home() {
   const [isLoading, setIsLoading] = React.useState(true);
+  const [nextEvent, setNextEvent] = React.useState<Event | null>(null);
 
   React.useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 500);
     return () => clearTimeout(timer);
+  }, []);
+
+  React.useEffect(() => {
+    fetchEvents().then((events) => {
+      const upcoming = getNextUpcomingEvent(events);
+      setNextEvent(upcoming);
+    });
   }, []);
 
   if (isLoading) {
@@ -30,6 +41,10 @@ export default function Home() {
       <Background />
       <main>
         <Hero />
+        
+        {/* Event Countdown - nur für featured Events */}
+        {nextEvent && <EventCountdown event={nextEvent} />}
+        
         <Features />
         <UpcomingEvents />
         <AboutPreview />

@@ -85,6 +85,7 @@
       "location": "Hafenkneipe, Rostock",
       "description": "Feier der Lederkultur! Vom Biker-Look bis Classic Leather. Meet & Greet mit der Szene aus ganz Norddeutschland.",
       "isExternal": false,
+      "featured": true,
       "registration": { "required": false, "open": true },
       "price": { "regular": 10, "currency": "EUR" }
     },
