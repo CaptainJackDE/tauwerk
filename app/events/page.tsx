@@ -5,12 +5,14 @@ import { formatEventDate, type Event } from "@/config/events";
 import { fetchEvents, sortEventsByDate } from "@/lib/events-loader";
 import { gradients } from "@/config/gradients";
 import { cn } from "@/lib/utils";
-import { Calendar, MapPin, UserCheck, UserX, Euro, Download, Plus } from "lucide-react";
+import { Calendar, MapPin, UserCheck, UserX, Euro, Download, Plus, LayoutGrid, List, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageLayout } from "@/components/composites/PageLayout";
 import Link from "next/link";
 import { downloadICS, getGoogleCalendarUrl } from "@/lib/calendar-utils";
 import { generateEventsListJsonLd } from "@/lib/seo-utils";
+
+type ViewMode = "grid" | "compact";
 
 interface EventCardProps {
   event: Event;
@@ -191,8 +193,208 @@ const EventCard = ({
   );
 };
 
+// Kompakte Event-Liste Komponente
+const CompactEventItem = ({
+  event,
+  onClick,
+}: {
+  event: Event;
+  onClick: () => void;
+}) => {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "w-full text-left p-4 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10",
+        "hover:bg-white/10 hover:border-white/20 transition-all duration-200 cursor-pointer",
+        "group"
+      )}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start gap-3 flex-1 min-w-0">
+          <div className="shrink-0 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 p-2 mt-0.5">
+            <Calendar className="w-4 h-4 text-primary" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className={cn("font-semibold text-base mb-1 truncate group-hover:text-primary transition-colors", gradients.title.primary)}>
+              {event.title}
+            </h3>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-foreground/60">
+              <span className="flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5" />
+                {formatEventDate(event.date)}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5" />
+                <span className="truncate">{event.location}</span>
+              </span>
+              {event.isExternal && (
+                <span className="text-xs bg-white/5 px-2 py-0.5 rounded">Extern</span>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="shrink-0 text-foreground/40 group-hover:text-foreground/60 transition-colors">
+          <Plus className="w-5 h-5 rotate-0 group-hover:rotate-90 transition-transform duration-200" />
+        </div>
+      </div>
+    </button>
+  );
+};
+
+// Event-Detail Dialog
+const EventDialog = ({
+  event,
+  onClose,
+}: {
+  event: Event | null;
+  onClose: () => void;
+}) => {
+  if (!event) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-background border border-white/10 shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors z-10"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        {/* Content */}
+        <div className="p-8 space-y-6">
+          {/* Header */}
+          <div className="pr-12">
+            <h2 className={cn("text-3xl font-bold mb-2", gradients.title.primary)}>
+              {event.title}
+            </h2>
+            {event.isExternal && (
+              <span className="inline-block text-sm text-foreground/60 italic bg-white/5 px-3 py-1 rounded">
+                Externes Event - nicht von Tauwerk organisiert
+              </span>
+            )}
+          </div>
+
+          {/* Event Details Grid */}
+          <div className="grid gap-4">
+            <div className="flex items-center gap-3 text-foreground/70">
+              <div className="rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 p-2">
+                <Calendar className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <div className="text-sm text-foreground/50">Datum & Uhrzeit</div>
+                <div className="font-medium">{formatEventDate(event.date)}</div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 text-foreground/70">
+              <div className="rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 p-2">
+                <MapPin className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <div className="text-sm text-foreground/50">Location</div>
+                <div className="font-medium">{event.location}</div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 text-foreground/70">
+              <div className="rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 p-2">
+                {event.registration.required ? (
+                  <UserCheck className="w-5 h-5 text-primary" />
+                ) : (
+                  <UserX className="w-5 h-5 text-primary" />
+                )}
+              </div>
+              <div>
+                <div className="text-sm text-foreground/50">Anmeldung</div>
+                <div className="font-medium">
+                  {event.registration.required
+                    ? event.registration.open
+                      ? "Anmeldung erforderlich - Jetzt offen"
+                      : "Anmeldung erforderlich - Noch nicht offen"
+                    : "Keine Anmeldung erforderlich"}
+                </div>
+              </div>
+            </div>
+
+            {event.price && (
+              <div className="flex items-center gap-3 text-foreground/70">
+                <div className="rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 p-2">
+                  <Euro className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <div className="text-sm text-foreground/50">Eintritt</div>
+                  <div className="font-medium">
+                    {event.price.regular} {event.price.currency}
+                    {event.price.reduced && (
+                      <span className="text-sm text-foreground/60 ml-2">
+                        (erm. {event.price.reduced} {event.price.currency})
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Description */}
+          {event.description && (
+            <div className="pt-4 border-t border-white/10">
+              <h3 className="text-lg font-semibold mb-2">Beschreibung</h3>
+              <p className="text-foreground/70 leading-relaxed">{event.description}</p>
+            </div>
+          )}
+
+          {/* Actions */}
+          <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-white/10">
+            {event.registration.required && event.registration.open && event.registration.link && (
+              <Link href={event.registration.link} className="flex-1">
+                <Button className="w-full bg-gradient-to-r from-primary/20 to-secondary/20 hover:from-primary/30 hover:to-secondary/30 text-foreground border border-white/10 hover:border-white/20">
+                  Jetzt anmelden
+                </Button>
+              </Link>
+            )}
+            
+            {/* Calendar Export Buttons */}
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => downloadICS(event)}
+                className="flex-1 sm:flex-initial"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                .ics
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => window.open(getGoogleCalendarUrl(event), "_blank")}
+                className="flex-1 sm:flex-initial"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Google
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function EventsPage() {
   const [events, setEvents] = React.useState<Event[]>([]);
+  const [viewMode, setViewMode] = React.useState<ViewMode>("grid");
+  const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
 
   React.useEffect(() => {
     let mounted = true;
@@ -277,10 +479,43 @@ export default function EventsPage() {
         }}
       />
       
+      {/* Event Detail Dialog */}
+      <EventDialog event={selectedEvent} onClose={() => setSelectedEvent(null)} />
+      
       <PageLayout
         title="Unsere Events"
         subtitle="Entdecke unsere kommenden Veranstaltungen und sei dabei!"
       >
+        {/* View Mode Toggle */}
+        <div className="flex justify-end mb-8">
+          <div className="inline-flex rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 p-1">
+            <button
+              onClick={() => setViewMode("grid")}
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200",
+                viewMode === "grid"
+                  ? "bg-gradient-to-r from-primary/20 to-secondary/20 text-foreground"
+                  : "text-foreground/60 hover:text-foreground hover:bg-white/5"
+              )}
+            >
+              <LayoutGrid className="w-4 h-4" />
+              <span className="text-sm font-medium">Kacheln</span>
+            </button>
+            <button
+              onClick={() => setViewMode("compact")}
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200",
+                viewMode === "compact"
+                  ? "bg-gradient-to-r from-primary/20 to-secondary/20 text-foreground"
+                  : "text-foreground/60 hover:text-foreground hover:bg-white/5"
+              )}
+            >
+              <List className="w-4 h-4" />
+              <span className="text-sm font-medium">Liste</span>
+            </button>
+          </div>
+        </div>
+
         <div className="space-y-16">
           {Object.entries(eventsByYearAndMonth).map(([year, months]) => (
             <div key={year} className="space-y-12">
@@ -299,22 +534,39 @@ export default function EventsPage() {
                   >
                     {getMonthName(Number(month))}
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {events.map((event) => (
-                      <div key={event.id} id={`event-${event.id}`}>
-                        <EventCard
+                  
+                  {/* Grid View */}
+                  {viewMode === "grid" && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {events.map((event) => (
+                        <div key={event.id} id={`event-${event.id}`}>
+                          <EventCard
+                            event={event}
+                            title={event.title}
+                            date={formatEventDate(event.date)}
+                            location={event.location}
+                            description={event.description}
+                            isExternal={event.isExternal}
+                            registration={event.registration}
+                            price={event.price}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {/* Compact List View */}
+                  {viewMode === "compact" && (
+                    <div className="space-y-3">
+                      {events.map((event) => (
+                        <CompactEventItem
+                          key={event.id}
                           event={event}
-                          title={event.title}
-                          date={formatEventDate(event.date)}
-                          location={event.location}
-                          description={event.description}
-                          isExternal={event.isExternal}
-                          registration={event.registration}
-                          price={event.price}
+                          onClick={() => setSelectedEvent(event)}
                         />
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
