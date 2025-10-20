@@ -5,14 +5,15 @@ import { formatEventDate, type Event } from "@/config/events";
 import { fetchEvents, sortEventsByDate } from "@/lib/events-loader";
 import { gradients } from "@/config/gradients";
 import { cn } from "@/lib/utils";
-import { Calendar, MapPin, UserCheck, UserX, Euro, Download, Plus, LayoutGrid, List, X } from "lucide-react";
+import { Calendar, MapPin, UserCheck, UserX, Euro, Download, Plus, LayoutGrid, List, X, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageLayout } from "@/components/composites/PageLayout";
 import Link from "next/link";
 import { downloadICS, getGoogleCalendarUrl } from "@/lib/calendar-utils";
 import { generateEventsListJsonLd } from "@/lib/seo-utils";
+import { getStorageItem, setStorageItem, STORAGE_KEYS } from "@/lib/storage";
 
-type ViewMode = "grid" | "compact";
+type ViewMode = "grid" | "compact" | "timeline";
 
 interface EventCardProps {
   event: Event;
@@ -286,6 +287,153 @@ const CompactEventItem = ({
   );
 };
 
+// Timeline Item Component
+interface TimelineItemProps {
+  event: Event;
+  isNextEvent: boolean;
+  isPast: boolean;
+  onClick: () => void;
+  position: "left" | "right";
+}
+
+const TimelineItem = ({ event, isNextEvent, isPast, onClick, position }: TimelineItemProps) => {
+  return (
+    <div className={cn(
+      "relative flex items-center gap-8 mb-8",
+      position === "left" ? "flex-row" : "flex-row-reverse"
+    )}>
+      {/* Event Card */}
+      <div className={cn(
+        "w-[calc(50%-2rem)] group cursor-pointer",
+        position === "left" ? "text-right" : "text-left"
+      )}>
+        <div
+          onClick={onClick}
+          className={cn(
+            "relative rounded-2xl border transition-all duration-300",
+            "backdrop-blur-xl bg-gradient-to-br shadow-lg",
+            isPast
+              ? "from-white/[0.02] to-white/[0.01] border-white/5 opacity-50 saturate-50 hover:opacity-60"
+              : "from-white/[0.08] to-white/[0.04] border-white/20 hover:border-white/30 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1",
+            isNextEvent && "ring-2 ring-primary/60 border-primary/40 shadow-primary/20"
+          )}
+        >
+          <div className="p-6 space-y-4">
+            {/* Badges */}
+            <div className={cn(
+              "flex gap-2 flex-wrap items-center",
+              position === "left" ? "justify-end" : "justify-start"
+            )}>
+              {isNextEvent && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-primary/40 to-secondary/40 border border-primary/50 animate-pulse shadow-lg shadow-primary/30">
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+                  </span>
+                  Nächstes Event
+                </span>
+              )}
+              {isPast && (
+                <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-white/5 border border-white/10 text-white/50">
+                  Vergangen
+                </span>
+              )}
+              {event.isExternal && (
+                <span className="inline-flex items-center px-2 py-1 rounded text-[10px] font-medium bg-white/5 border border-white/10 text-white/40">
+                  Extern
+                </span>
+              )}
+            </div>
+
+            {/* Title */}
+            <h3 className={cn(
+              "text-xl font-bold line-clamp-2 transition-colors",
+              isPast ? "text-white/50" : gradients.title.primary
+            )}>
+              {event.title}
+            </h3>
+
+            {/* Date */}
+            <div className={cn(
+              "flex items-center gap-2.5 text-sm",
+              position === "left" ? "justify-end" : "justify-start",
+              isPast ? "text-foreground/40" : "text-foreground/80"
+            )}>
+              <div className={cn(
+                "p-1.5 rounded-lg",
+                isPast ? "bg-white/5" : "bg-gradient-to-br from-primary/20 to-secondary/20"
+              )}>
+                <Calendar className="w-4 h-4" />
+              </div>
+              <span className="font-medium">{formatEventDate(event.date)}</span>
+            </div>
+
+            {/* Location */}
+            <div className={cn(
+              "flex items-center gap-2.5 text-sm",
+              position === "left" ? "justify-end" : "justify-start",
+              isPast ? "text-foreground/30" : "text-foreground/70"
+            )}>
+              <div className={cn(
+                "p-1.5 rounded-lg",
+                isPast ? "bg-white/5" : "bg-gradient-to-br from-primary/15 to-secondary/15"
+              )}>
+                <MapPin className="w-4 h-4" />
+              </div>
+              <span className="line-clamp-1 font-medium">{event.location}</span>
+            </div>
+
+            {/* Description Preview */}
+            {event.description && (
+              <p className={cn(
+                "text-sm line-clamp-2 leading-relaxed",
+                position === "left" ? "text-right" : "text-left",
+                isPast ? "text-foreground/30" : "text-foreground/60"
+              )}>
+                {event.description}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Timeline Node */}
+      <div className="relative flex items-center justify-center w-16 h-16 shrink-0 z-10">
+        {/* Vertical Line */}
+        <div className={cn(
+          "absolute w-0.5 h-full left-1/2 -translate-x-1/2 -z-10",
+          isPast
+            ? "bg-gradient-to-b from-white/5 to-white/10"
+            : "bg-gradient-to-b from-primary/40 via-secondary/30 to-primary/40"
+        )}></div>
+        
+        {/* Outer Glow Ring */}
+        <div className={cn(
+          "absolute w-8 h-8 rounded-full transition-all duration-300",
+          isPast
+            ? "bg-white/5"
+            : isNextEvent
+            ? "bg-primary/20 animate-pulse"
+            : "bg-primary/10"
+        )}></div>
+        
+        {/* Node Circle */}
+        <div className={cn(
+          "relative z-10 w-5 h-5 rounded-full border-[3px] transition-all duration-300 shadow-lg",
+          isPast
+            ? "bg-background border-white/20 shadow-white/5"
+            : isNextEvent
+            ? "bg-gradient-to-br from-primary to-secondary border-primary shadow-primary/50 animate-pulse scale-110"
+            : "bg-gradient-to-br from-primary/60 to-secondary/60 border-white/40 shadow-primary/30 hover:scale-125"
+        )}></div>
+      </div>
+
+      {/* Spacer for alignment */}
+      <div className="w-[calc(50%-2rem)]"></div>
+    </div>
+  );
+};
+
 // Event-Detail Dialog
 const EventDialog = ({
   event,
@@ -437,8 +585,16 @@ const EventDialog = ({
 
 export default function EventsPage() {
   const [events, setEvents] = React.useState<Event[]>([]);
-  const [viewMode, setViewMode] = React.useState<ViewMode>("grid");
+  const [viewMode, setViewMode] = React.useState<ViewMode>(() => {
+    // Lade gespeicherte Präferenz aus LocalStorage
+    return getStorageItem<ViewMode>(STORAGE_KEYS.EVENTS_VIEW_MODE, "grid");
+  });
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
+
+  // Speichere View-Mode-Änderungen im LocalStorage
+  React.useEffect(() => {
+    setStorageItem(STORAGE_KEYS.EVENTS_VIEW_MODE, viewMode);
+  }, [viewMode]);
 
   React.useEffect(() => {
     let mounted = true;
@@ -621,10 +777,76 @@ export default function EventsPage() {
               <List className="w-4 h-4" />
               <span className="text-sm font-medium">Liste</span>
             </button>
+            <button
+              onClick={() => setViewMode("timeline")}
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200",
+                viewMode === "timeline"
+                  ? "bg-gradient-to-r from-primary/20 to-secondary/20 text-foreground"
+                  : "text-foreground/60 hover:text-foreground hover:bg-white/5"
+              )}
+            >
+              <Clock className="w-4 h-4" />
+              <span className="text-sm font-medium">Zeitstrahl</span>
+            </button>
           </div>
         </div>
 
-        <div className="space-y-16">
+        {/* Timeline View */}
+        {viewMode === "timeline" ? (
+          <div className="max-w-6xl mx-auto py-16">
+            {/* Kommende Events */}
+            <div className="space-y-0">
+              {upcomingEvents.map((event, index) => (
+                <TimelineItem
+                  key={event.id}
+                  event={event}
+                  isNextEvent={event.id === nextEventId}
+                  isPast={false}
+                  onClick={() => setSelectedEvent(event)}
+                  position={index % 2 === 0 ? "left" : "right"}
+                />
+              ))}
+            </div>
+
+            {/* Vergangene Events Separator */}
+            {pastEvents.length > 0 && (
+              <div className="relative my-20 py-12">
+                {/* Timeline Line continues */}
+                <div className="absolute left-1/2 -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-primary/40 via-white/10 to-white/5"></div>
+                
+                {/* Separator Badge */}
+                <div className="relative flex justify-center">
+                  <div className="bg-gradient-to-br from-background via-background/95 to-background px-8 py-4 rounded-2xl border border-white/20 backdrop-blur-xl shadow-2xl">
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-white/30"></div>
+                      <span className="text-base font-semibold text-white/70 tracking-wide">Vergangene Events</span>
+                      <div className="w-2 h-2 rounded-full bg-white/30"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Vergangene Events */}
+            {pastEvents.length > 0 && (
+              <div className="space-y-0">
+                {pastEvents.map((event, index) => (
+                  <TimelineItem
+                    key={event.id}
+                    event={event}
+                    isNextEvent={false}
+                    isPast={true}
+                    onClick={() => setSelectedEvent(event)}
+                    position={index % 2 === 0 ? "left" : "right"}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          /* Grid and Compact Views */
+          <div className="space-y-16">
           {/* Kommende Events */}
           {Object.entries(upcomingEventsByYearAndMonth).map(([year, months]) => (
             <div key={year} className="space-y-12">
@@ -745,7 +967,8 @@ export default function EventsPage() {
               ))}
             </div>
           )}
-        </div>
+          </div>
+        )}
       </PageLayout>
     </>
   );
