@@ -14,11 +14,13 @@ A modern, responsive web application built with Next.js 15, featuring glassmorph
 
 - **Core Functionality**
   - 🗓️ Dynamic event management with flexible date handling
-  - 🖼️ File-based gallery system with lightbox viewer
-  - � Responsive glassmorphic UI with blue gradient theming
-  - � SEO-optimized pages with German content
+  - � iCal export and Google Calendar integration
+  - �🖼️ File-based gallery system with lightbox viewer
+  - ✨ Responsive glassmorphic UI with blue gradient theming
+  - 🔍 SEO-optimized with structured data (Schema.org)
   - 🎨 Configuration-driven content management
-  - � Component variants using class-variance-authority (CVA)
+  - 🎯 Component variants using class-variance-authority (CVA)
+  - 🗺️ Dynamic sitemap generation for better indexing
 
 ## 📦 Installation
 
@@ -192,28 +194,42 @@ The gallery automatically discovers images from the `public/gallery/` folder:
 
 Events can be edited in real-time via a JSON file, either locally or from a remote server.
 
-1. Local JSON (default)
+1. **Local JSON (default)**
    - Edit `public/events.json`
    - The API route `/api/events` reads from this file
 
-2. Remote JSON (optional)
+2. **Remote JSON (optional)**
    - Host a JSON at a URL returning either `{ events: [...] }` or `[...]`
    - Set environment variable:
      - `NEXT_PUBLIC_EVENTS_URL=https://example.com/events.json`
    - The API will fetch remotely with `cache: 'no-store'` for real-time updates
 
-3. Consumption in UI
-   - Components use `lib/events-loader.ts` to fetch events dynamically
-   - Existing formatting functions (e.g., `formatEventDate`) are reused
+3. **Event Builder & Editor**
+   - Navigate to `/events/builder` for single-event creation with JSON output
+   - Navigate to `/events/editor` for batch upload/edit/download capabilities
+   - Interactive UI with copy-to-clipboard and download features
 
-4. Types and Utilities
+4. **Calendar Export Features**
+   - **iCal Download**: Each event card includes a `.ics` download button
+   - **Google Calendar**: Direct "Add to Google Calendar" integration
+   - **Utilities**: Calendar functions in `lib/calendar-utils.ts`
+
+5. **SEO Optimization**
+   - **Structured Data**: JSON-LD Schema.org Event markup on every event
+   - **Open Graph**: Social media preview tags for sharing
+   - **Dynamic Sitemap**: Auto-generated sitemap.xml including all events
+   - **Robots.txt**: Configured for optimal search engine crawling
+
+6. **Types and Utilities**
    - Event TypeScript interfaces remain defined in `config/events.ts`
    - Sorting helper in `lib/events-loader.ts` ensures consistent ordering
+   - SEO utilities in `lib/seo-utils.ts` for structured data generation
 
-5. Notes
+7. **Notes**
    - Local JSON is served from `public/events.json` and is cache-bypassed in API
    - Remote URL has priority when `NEXT_PUBLIC_EVENTS_URL` is set
    - No server restart needed for remote updates
+   - Builder/Editor pages excluded from search engine indexing
 
 ### Content Management
 

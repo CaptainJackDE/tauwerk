@@ -5,12 +5,15 @@ import { formatEventDate, type Event } from "@/config/events";
 import { fetchEvents, sortEventsByDate } from "@/lib/events-loader";
 import { gradients } from "@/config/gradients";
 import { cn } from "@/lib/utils";
-import { Calendar, MapPin, UserCheck, UserX, Euro } from "lucide-react";
+import { Calendar, MapPin, UserCheck, UserX, Euro, Download, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageLayout } from "@/components/composites/PageLayout";
 import Link from "next/link";
+import { downloadICS, getGoogleCalendarUrl } from "@/lib/calendar-utils";
+import { generateEventsListJsonLd } from "@/lib/seo-utils";
 
 interface EventCardProps {
+  event: Event;
   title: string;
   date: string;
   location: string;
@@ -35,6 +38,7 @@ interface EventCardProps {
 }
 
 const EventCard = ({
+  event,
   title,
   date,
   location,
@@ -153,6 +157,26 @@ const EventCard = ({
             </Button>
           </Link>
         )}
+
+        {/* Calendar export buttons - dezent am unteren Rand */}
+        <div className="flex items-center justify-center gap-3 pt-2 mt-auto border-t border-white/5">
+          <button
+            onClick={() => downloadICS(event)}
+            className="flex items-center gap-1.5 text-xs text-muted-foreground/60 hover:text-foreground hover:bg-white/5 rounded px-2 py-1.5 transition-all duration-200 cursor-pointer hover:scale-105"
+            title="Als iCal-Datei herunterladen"
+          >
+            <Download className="w-3 h-3" />
+            <span>.ics</span>
+          </button>
+          <button
+            onClick={() => window.open(getGoogleCalendarUrl(event), "_blank")}
+            className="flex items-center gap-1.5 text-xs text-muted-foreground/60 hover:text-foreground hover:bg-white/5 rounded px-2 py-1.5 transition-all duration-200 cursor-pointer hover:scale-105"
+            title="Zu Google Calendar hinzufügen"
+          >
+            <Plus className="w-3 h-3" />
+            <span>Google</span>
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -235,48 +259,59 @@ export default function EventsPage() {
   }
 
   return (
-    <PageLayout
-      title="Unsere Events"
-      subtitle="Entdecke unsere kommenden Veranstaltungen und sei dabei!"
-    >
-      <div className="space-y-16">
-        {Object.entries(eventsByYearAndMonth).map(([year, months]) => (
-          <div key={year} className="space-y-12">
-            <h2
-              className={cn("text-3xl font-semibold", gradients.title.primary)}
-            >
-              {year}
-            </h2>
-            {Object.entries(months).map(([month, events]) => (
-              <div key={`${year}-${month}`} className="space-y-6">
-                <h3
-                  className={cn(
-                    "text-2xl font-medium",
-                    gradients.title.primary,
-                  )}
-                >
-                  {getMonthName(Number(month))}
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {events.map((event) => (
-                    <div key={event.id} id={`event-${event.id}`}>
-                      <EventCard
-                        title={event.title}
-                        date={formatEventDate(event.date)}
-                        location={event.location}
-                        description={event.description}
-                        isExternal={event.isExternal}
-                        registration={event.registration}
-                        price={event.price}
-                      />
-                    </div>
-                  ))}
+    <>
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateEventsListJsonLd(sortedEvents)),
+        }}
+      />
+      
+      <PageLayout
+        title="Unsere Events"
+        subtitle="Entdecke unsere kommenden Veranstaltungen und sei dabei!"
+      >
+        <div className="space-y-16">
+          {Object.entries(eventsByYearAndMonth).map(([year, months]) => (
+            <div key={year} className="space-y-12">
+              <h2
+                className={cn("text-3xl font-semibold", gradients.title.primary)}
+              >
+                {year}
+              </h2>
+              {Object.entries(months).map(([month, events]) => (
+                <div key={`${year}-${month}`} className="space-y-6">
+                  <h3
+                    className={cn(
+                      "text-2xl font-medium",
+                      gradients.title.primary,
+                    )}
+                  >
+                    {getMonthName(Number(month))}
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {events.map((event) => (
+                      <div key={event.id} id={`event-${event.id}`}>
+                        <EventCard
+                          event={event}
+                          title={event.title}
+                          date={formatEventDate(event.date)}
+                          location={event.location}
+                          description={event.description}
+                          isExternal={event.isExternal}
+                          registration={event.registration}
+                          price={event.price}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </PageLayout>
+              ))}
+            </div>
+          ))}
+        </div>
+      </PageLayout>
+    </>
   );
 }
