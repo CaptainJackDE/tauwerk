@@ -1,23 +1,144 @@
 {
   "events": [
     {
-      "id": "csd-hro",
-      "title": "CSD Rostock",
+      "id": "csd-hro-2025",
+      "title": "CSD Rostock 2025",
       "category": "csd",
       "date": { "day": 19, "month": 7, "year": 2025, "time": "12:00" },
       "location": "Neuer Markt, Rostock",
-      "description": "",
+      "description": "Die große Pride-Parade durch Rostock mit anschließendem Straßenfest. Gemeinsam setzen wir ein Zeichen für Vielfalt und Akzeptanz!",
       "isExternal": true,
-      "registration": { "required": false, "open": true, "link": "" },
+      "registration": { "required": false, "open": true },
       "price": null
     },
     {
-      "id": "csd-hro-workshop",
+      "id": "fetisch-workshop-beginner",
       "title": "Einsteiger-Workshop Fetisch",
       "category": "other",
-      "date": { "month": 7, "year": 2025 },
-      "location": "Planbar, Rostock",
-      "description": "Beschreibung",
+      "date": { "day": 15, "month": 8, "year": 2025, "time": "18:00" },
+      "location": "Tauwerk Clubraum, Schwerin",
+      "description": "Für alle, die neugierig sind: Basics über Materialien, Praktiken und Kommunikation in der Fetisch-Szene. Offen und vorurteilsfrei.",
+      "isExternal": false,
+      "registration": { "required": true, "open": true, "link": "https://example.com/anmeldung" },
+      "price": { "regular": 15, "reduced": 10, "currency": "EUR" }
+    },
+    {
+      "id": "latex-party-summer",
+      "title": "Latex Summer Night",
+      "category": "fetish",
+      "date": { "day": 23, "month": 8, "year": 2025, "time": "21:00" },
+      "location": "Club Noir, Rostock",
+      "description": "Heiße Sommernacht in Latex! Dress-Code: Latex, Leder oder Lack. DJ-Line, Darkroom und Chill-Area.",
+      "isExternal": false,
+      "registration": { "required": true, "open": true, "link": "https://example.com/latex-party" },
+      "price": { "regular": 25, "reduced": 20, "currency": "EUR" }
+    },
+    {
+      "id": "rope-workshop-advanced",
+      "title": "Shibari Workshop - Fortgeschrittene",
+      "category": "other",
+      "date": { "day": 5, "month": 9, "year": 2025, "time": "15:00" },
+      "location": "Tauwerk Studio, Rostock",
+      "description": "Vertiefung der Shibari-Techniken: Hängebondage und komplexe Muster. Nur für Teilnehmer mit Grundkenntnissen.",
+      "isExternal": false,
+      "registration": { "required": true, "open": false, "opensAt": { "day": 1, "month": 8, "year": 2025 } },
+      "price": { "regular": 45, "reduced": 35, "currency": "EUR" }
+    },
+    {
+      "id": "fetish-ball-autumn",
+      "title": "Black Masquerade Ball",
+      "category": "fetish",
+      "date": { "day": 21, "month": 9, "year": 2025, "time": "20:00" },
+      "location": "Ballsaal Schwerin",
+      "description": "Eleganter Fetisch-Ball mit Maskenpflicht. Dress-Code: Black Tie Fetish - Latex, Leder, Korsett oder Anzug. Live-Musik und Performance Acts.",
+      "isExternal": false,
+      "registration": { "required": true, "open": true, "link": "https://example.com/masquerade" },
+      "price": { "regular": 40, "reduced": 30, "currency": "EUR" }
+    },
+    {
+      "id": "csd-schwerin-2025",
+      "title": "CSD Schwerin",
+      "category": "csd",
+      "date": { "day": 28, "month": 9, "year": 2025, "time": "14:00" },
+      "location": "Marktplatz, Schwerin",
+      "description": "Christopher Street Day in der Landeshauptstadt! Demo-Zug, Bühnenprogramm und Infostände rund um LGBTQIA+ Themen.",
+      "isExternal": true,
+      "registration": { "required": false, "open": true },
+      "price": null
+    },
+    {
+      "id": "private-playparty-oct",
+      "title": "Private Playparty",
+      "category": "private",
+      "date": { "day": 12, "month": 10, "year": 2025, "time": "22:00" },
+      "location": "Privater Raum, Rostock",
+      "description": "Exklusive Playparty für Mitglieder und geladene Gäste. Verschiedene Spielbereiche, sichere Atmosphäre. Details nach Anmeldung.",
+      "isExternal": false,
+      "registration": { "required": true, "open": true, "link": "https://example.com/playparty" },
+      "price": { "regular": 20, "currency": "EUR" }
+    },
+    {
+      "id": "leather-pride-mv",
+      "title": "Leather Pride MV",
+      "category": "fetish",
+      "date": { "day": 2, "month": 11, "year": 2025, "time": "19:00" },
+      "location": "Hafenkneipe, Rostock",
+      "description": "Feier der Lederkultur! Vom Biker-Look bis Classic Leather. Meet & Greet mit der Szene aus ganz Norddeutschland.",
+      "isExternal": false,
+      "registration": { "required": false, "open": true },
+      "price": { "regular": 10, "currency": "EUR" }
+    },
+    {
+      "id": "kink-stammtisch-nov",
+      "title": "Kink-Stammtisch November",
+      "category": "other",
+      "date": { "day": 14, "month": 11, "year": 2025, "time": "19:30" },
+      "location": "Café Zeitgeist, Rostock",
+      "description": "Offener Stammtisch zum Kennenlernen und Austauschen. Für alle Interessierten - Neulinge willkommen!",
+      "isExternal": false,
+      "registration": { "required": false, "open": true },
+      "price": null
+    },
+    {
+      "id": "fetish-xmas-party",
+      "title": "Kinky Christmas Party",
+      "category": "fetish",
+      "date": { "day": 20, "month": 12, "year": 2025, "time": "20:00" },
+      "location": "Tauwerk Location, Schwerin",
+      "description": "Weihnachtsfeier mal anders! Dress-Code: Festive Fetish. Wichteln, DJ und weihnachtliches Buffet.",
+      "isExternal": false,
+      "registration": { "required": true, "open": false, "opensAt": { "day": 1, "month": 11, "year": 2025 } },
+      "price": { "regular": 30, "reduced": 25, "currency": "EUR" }
+    },
+    {
+      "id": "new-year-dungeon-party",
+      "title": "Silvester Dungeon Party",
+      "category": "private",
+      "date": { "day": 31, "month": 12, "year": 2025, "time": "21:00" },
+      "location": "Private Location (Details nach Anmeldung)",
+      "description": "Exklusives Silvester-Event in privatem Dungeon. Limited Tickets! Verschiedene Spielstationen, Mitternachts-Show und Sekt-Empfang.",
+      "isExternal": false,
+      "registration": { "required": true, "open": false, "opensAt": { "day": 15, "month": 11, "year": 2025 } },
+      "price": { "regular": 50, "reduced": 40, "currency": "EUR" }
+    },
+    {
+      "id": "rope-basics-jan",
+      "title": "Rope Bondage Basics",
+      "category": "other",
+      "date": { "day": 18, "month": 1, "year": 2026, "time": "16:00" },
+      "location": "Tauwerk Studio, Rostock",
+      "description": "Einführung in Seilbondage: Grundknoten, Sicherheit und erste einfache Fesselungen. Keine Vorkenntnisse nötig.",
+      "isExternal": false,
+      "registration": { "required": true, "open": false, "opensAt": { "day": 1, "month": 12, "year": 2025 } },
+      "price": { "regular": 35, "reduced": 25, "currency": "EUR" }
+    },
+    {
+      "id": "tba-event-2026",
+      "title": "Große Frühjahrs-Party 2026",
+      "category": "fetish",
+      "date": { "year": 2026 },
+      "location": "TBA",
+      "description": "Save the Date! Details folgen bald. Es wird groß, es wird laut, es wird fetischig!",
       "isExternal": false,
       "registration": { "required": true, "open": false }
     }
