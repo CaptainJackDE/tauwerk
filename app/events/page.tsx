@@ -78,80 +78,88 @@ const EventCard = ({
   return (
     <div
       className={cn(
-        "group relative p-8 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10",
+        "group relative h-full flex flex-col p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10",
         "hover:bg-white/10 hover:border-white/20 hover:shadow-2xl hover:shadow-primary/5",
         "hover:-translate-y-1 transition-all duration-300",
         className,
       )}
     >
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      <div className="relative space-y-6">
+      
+      <div className="relative flex flex-col h-full space-y-4">
+        {/* Header mit Datum */}
         <div className="flex items-center gap-3">
-          <div className="relative">
+          <div className="relative shrink-0">
             <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-primary/20 to-secondary/20 blur opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="relative rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 p-2">
-              <Calendar className="w-6 h-6 text-primary" />
+              <Calendar className="w-5 h-5 text-primary" />
             </div>
           </div>
-          <div className="flex flex-col">
-            <span className="text-lg text-foreground/70">
+          <div className="flex flex-col min-w-0">
+            <span className="text-base font-medium text-foreground/80 truncate">
               {date.split("(")[0].trim()}
             </span>
             {date.includes("(") && (
-              <span className="text-sm text-foreground/50">
+              <span className="text-xs text-foreground/50 truncate">
                 {date.split("(")[1].replace(")", "")}
               </span>
             )}
           </div>
         </div>
 
-        <div className="space-y-2">
-          <h3 className={cn("text-2xl font-semibold", gradients.title.primary)}>
+        {/* Titel und External Badge */}
+        <div className="space-y-1.5">
+          <h3 className={cn("text-xl font-semibold leading-tight line-clamp-2", gradients.title.primary)}>
             {title}
           </h3>
           {isExternal && (
-            <p className="text-sm text-foreground/60 italic">
-              Externes Event - nicht von Tauwerk organisiert
-            </p>
+            <span className="inline-block text-xs text-foreground/60 italic bg-white/5 px-2 py-0.5 rounded">
+              Externes Event
+            </span>
           )}
         </div>
 
-        <p className="text-foreground/70 text-base">{description}</p>
+        {/* Beschreibung mit fester Höhe */}
+        <p className="text-sm text-foreground/70 line-clamp-3 flex-shrink-0">{description}</p>
 
-        <div className="flex items-center gap-3 text-foreground/70">
-          <MapPin className="w-4 h-4" />
-          <span className="text-sm">{location}</span>
-        </div>
-
-        <div className="flex items-center gap-3 text-foreground/70">
-          {registration.required ? (
-            <UserCheck className="w-4 h-4" />
-          ) : (
-            <UserX className="w-4 h-4" />
-          )}
-          <span className="text-sm">{registrationStatus}</span>
-        </div>
-
-        {price && (
-          <div className="flex items-center gap-3 text-foreground/70">
-            <Euro className="w-4 h-4" />
-            <div className="text-sm">
-              {price.regular && (
-                <span className="mr-2">
-                  {price.regular} {price.currency}
-                </span>
-              )}
-              {price.reduced && (
-                <span className="text-foreground/50">
-                  (ermäßigt: {price.reduced} {price.currency})
-                </span>
-              )}
-            </div>
+        {/* Info-Section - wächst mit flex-grow */}
+        <div className="space-y-2.5 flex-grow">
+          <div className="flex items-center gap-2.5 text-foreground/70">
+            <MapPin className="w-4 h-4 shrink-0" />
+            <span className="text-sm truncate">{location}</span>
           </div>
-        )}
 
+          <div className="flex items-center gap-2.5 text-foreground/70">
+            {registration.required ? (
+              <UserCheck className="w-4 h-4 shrink-0" />
+            ) : (
+              <UserX className="w-4 h-4 shrink-0" />
+            )}
+            <span className="text-sm truncate">{registrationStatus}</span>
+          </div>
+
+          {price && (
+            <div className="flex items-center gap-2.5 text-foreground/70">
+              <Euro className="w-4 h-4 shrink-0" />
+              <div className="text-sm min-w-0">
+                {price.regular && (
+                  <span className="mr-2 whitespace-nowrap">
+                    {price.regular} {price.currency}
+                  </span>
+                )}
+                {price.reduced && (
+                  <span className="text-foreground/50 text-xs whitespace-nowrap">
+                    (erm. {price.reduced} {price.currency})
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Action Button - immer am Ende */}
         {registration.required && registration.open && registration.link && (
-          <Link href={registration.link} className="block w-full">
+          <Link href={registration.link} className="block w-full mt-auto">
             <Button className="w-full bg-gradient-to-r from-primary/20 to-secondary/20 hover:from-primary/30 hover:to-secondary/30 text-foreground border border-white/10 hover:border-white/20 transition-all duration-300">
               Jetzt anmelden
             </Button>
@@ -159,7 +167,7 @@ const EventCard = ({
         )}
 
         {/* Calendar export - sehr dezent, nur beim Hover sichtbar */}
-        <div className="flex items-center justify-center gap-1 pt-1 mt-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="flex items-center justify-center gap-1 pt-2 border-t border-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <button
             onClick={() => downloadICS(event)}
             className="flex items-center gap-1 text-[10px] text-muted-foreground/40 hover:text-muted-foreground/80 rounded px-1.5 py-0.5 transition-all duration-200 cursor-pointer"
