@@ -132,6 +132,15 @@ export default function GalleryPage() {
           <div
             key={index}
             className="group relative aspect-square overflow-hidden rounded-2xl shadow-xl backdrop-blur-lg bg-white/10 border border-white/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-white/10"
+            role="button"
+            tabIndex={0}
+            aria-label={`Bild öffnen: ${image.alt}`}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setSelectedImage(image);
+              }
+            }}
           >
             <Image
               src={image.src}

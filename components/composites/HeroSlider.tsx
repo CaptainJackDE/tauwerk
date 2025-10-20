@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const slides = [
   {
@@ -45,10 +46,13 @@ export function HeroSlider() {
             )}
           >
             <div className="absolute inset-0 bg-black/30" />
-            <img
+            <Image
               src={slide.image}
               alt={`Slide ${slide.id}`}
-              className="w-full h-full object-cover"
+              fill
+              priority={index === currentSlide}
+              sizes="100vw"
+              className="object-cover"
             />
           </div>
         ))}

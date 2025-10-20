@@ -7,7 +7,7 @@ interface GalleryImage {
   alt: string;
 }
 
-// Force Node.js runtime für fs support auf Vercel
+// Force Node.js runtime for fs support on Vercel/Edge
 export const runtime = 'nodejs';
 
 export async function GET() {
@@ -16,7 +16,7 @@ export async function GET() {
 
     // Überprüfe, ob das Verzeichnis existiert
     if (!fs.existsSync(galleryDir)) {
-      return NextResponse.json([]);
+  return NextResponse.json([], { status: 200 });
     }
 
     // Lese alle Dateien aus dem Verzeichnis
@@ -34,7 +34,7 @@ export async function GET() {
       alt: path.parse(file).name.replace(/[-_]/g, ' '), // Bessere Alt-Text Formatierung
     }));
 
-    return NextResponse.json(images);
+    return NextResponse.json(images, { status: 200 });
   } catch (error) {
     console.error("Fehler beim Lesen der Bilder:", error);
     return NextResponse.json(

@@ -327,8 +327,8 @@ const TimelineItem = ({ event, isNextEvent, isPast, onClick, position }: Timelin
               {isNextEvent && (
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-primary/40 to-secondary/40 border border-primary/50 animate-pulse shadow-lg shadow-primary/30">
                   <span className="relative flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary" />
                   </span>
                   Nächstes Event
                 </span>
@@ -405,7 +405,7 @@ const TimelineItem = ({ event, isNextEvent, isPast, onClick, position }: Timelin
           isPast
             ? "bg-gradient-to-b from-white/5 to-white/10"
             : "bg-gradient-to-b from-primary/40 via-secondary/30 to-primary/40"
-        )}></div>
+        )} />
         
         {/* Outer Glow Ring */}
         <div className={cn(
@@ -415,7 +415,7 @@ const TimelineItem = ({ event, isNextEvent, isPast, onClick, position }: Timelin
             : isNextEvent
             ? "bg-primary/20 animate-pulse"
             : "bg-primary/10"
-        )}></div>
+        )} />
         
         {/* Node Circle */}
         <div className={cn(
@@ -425,11 +425,11 @@ const TimelineItem = ({ event, isNextEvent, isPast, onClick, position }: Timelin
             : isNextEvent
             ? "bg-gradient-to-br from-primary to-secondary border-primary shadow-primary/50 animate-pulse scale-110"
             : "bg-gradient-to-br from-primary/60 to-secondary/60 border-white/40 shadow-primary/30 hover:scale-125"
-        )}></div>
+        )} />
       </div>
 
       {/* Spacer for alignment */}
-      <div className="w-[calc(50%-2rem)]"></div>
+      <div className="w-[calc(50%-2rem)]" />
     </div>
   );
 };
@@ -820,15 +820,15 @@ export default function EventsPage() {
             {pastEvents.length > 0 && (
               <div className="relative my-20 py-12">
                 {/* Timeline Line continues */}
-                <div className="absolute left-1/2 -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-primary/40 via-white/10 to-white/5"></div>
+                <div className="absolute left-1/2 -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-primary/40 via-white/10 to-white/5" />
                 
                 {/* Separator Badge */}
                 <div className="relative flex justify-center">
                   <div className="bg-gradient-to-br from-background via-background/95 to-background px-8 py-4 rounded-2xl border border-white/20 backdrop-blur-xl shadow-2xl">
                     <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-white/30"></div>
+                      <div className="w-2 h-2 rounded-full bg-white/30" />
                       <span className="text-base font-semibold text-white/70 tracking-wide">Vergangene Events</span>
-                      <div className="w-2 h-2 rounded-full bg-white/30"></div>
+                      <div className="w-2 h-2 rounded-full bg-white/30" />
                     </div>
                   </div>
                 </div>
