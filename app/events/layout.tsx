@@ -12,4 +12,10 @@ export const metadata: Metadata = {
   },
 };
 
-export { default } from "./EventsPage";
+export default function EventsLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <>{children}</>;
+}
