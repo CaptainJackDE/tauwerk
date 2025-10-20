@@ -37,6 +37,8 @@ interface EventCardProps {
     currency?: string;
   };
   className?: string;
+  isNextEvent?: boolean;
+  isPast?: boolean;
 }
 
 const EventCard = ({
@@ -49,6 +51,8 @@ const EventCard = ({
   registration,
   price,
   className,
+  isNextEvent,
+  isPast,
 }: EventCardProps) => {
   const getRegistrationStatus = () => {
     if (!registration.required) {
@@ -80,13 +84,32 @@ const EventCard = ({
   return (
     <div
       className={cn(
-        "group relative h-full flex flex-col p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10",
-        "hover:bg-white/10 hover:border-white/20 hover:shadow-2xl hover:shadow-primary/5",
-        "hover:-translate-y-1 transition-all duration-300",
+        "group relative h-full flex flex-col p-6 rounded-2xl backdrop-blur-md border transition-all duration-300",
+        isPast && "opacity-40 saturate-50 pointer-events-none",
+        isNextEvent
+          ? "bg-gradient-to-br from-primary/15 to-secondary/15 border-primary/30 shadow-xl shadow-primary/10 ring-2 ring-primary/20"
+          : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1",
         className,
       )}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      {/* Past Event Badge */}
+      {isPast && (
+        <div className="absolute top-4 right-4 bg-foreground/10 text-foreground/60 text-xs font-medium px-3 py-1 rounded-full border border-foreground/10">
+          Vergangen
+        </div>
+      )}
+      
+      {/* Next Event Badge */}
+      {isNextEvent && (
+        <div className="absolute -top-3 -right-3 bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-pulse">
+          Nächstes Event
+        </div>
+      )}
+      
+      <div className={cn(
+        "absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+        isNextEvent ? "bg-gradient-to-br from-primary/10 to-secondary/10" : "bg-gradient-to-br from-primary/5 to-transparent"
+      )} />
       
       <div className="relative flex flex-col h-full space-y-4">
         {/* Header mit Datum */}
@@ -197,19 +220,40 @@ const EventCard = ({
 const CompactEventItem = ({
   event,
   onClick,
+  isNextEvent,
+  isPast,
 }: {
   event: Event;
   onClick: () => void;
+  isNextEvent?: boolean;
+  isPast?: boolean;
 }) => {
   return (
     <button
       onClick={onClick}
+      disabled={isPast}
       className={cn(
-        "w-full text-left p-4 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10",
-        "hover:bg-white/10 hover:border-white/20 transition-all duration-200 cursor-pointer",
-        "group"
+        "w-full text-left p-4 rounded-lg backdrop-blur-sm border transition-all duration-200 cursor-pointer group relative",
+        isPast && "opacity-40 saturate-50 cursor-not-allowed",
+        isNextEvent
+          ? "bg-gradient-to-r from-primary/15 to-secondary/15 border-primary/30 shadow-lg shadow-primary/10 ring-2 ring-primary/20"
+          : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20"
       )}
     >
+      {/* Past Event Badge for Compact View */}
+      {isPast && (
+        <div className="absolute -top-1 -right-1 bg-foreground/10 text-foreground/60 text-[9px] font-medium px-2 py-0.5 rounded-full border border-foreground/10">
+          Vergangen
+        </div>
+      )}
+      
+      {/* Next Event Badge for Compact View */}
+      {isNextEvent && (
+        <div className="absolute -top-2 -right-2 bg-gradient-to-r from-primary to-secondary text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-lg">
+          Nächstes
+        </div>
+      )}
+      
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3 flex-1 min-w-0">
           <div className="shrink-0 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 p-2 mt-0.5">
@@ -432,8 +476,54 @@ export default function EventsPage() {
     return 0;
   });
 
-  // Gruppiere Events nach Jahr und Monat
-  const eventsByYearAndMonth = sortedEvents.reduce(
+  // Finde das nächste bevorstehende Event (ab heute)
+  const getNextUpcomingEvent = () => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Auf Mitternacht setzen für Tagesvergleich
+    
+    for (const event of sortedEvents) {
+      // Wenn nur Jahr vorhanden, überspringe
+      if (!event.date.month) continue;
+      
+      const eventDate = new Date(
+        event.date.year,
+        event.date.month - 1,
+        event.date.day || 1
+      );
+      
+      // Wenn Event in der Zukunft oder heute
+      if (eventDate >= now) {
+        return event.id;
+      }
+    }
+    return null;
+  };
+
+  // Prüfe ob ein Event in der Vergangenheit liegt
+  const isEventPast = (event: Event): boolean => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    
+    // Events ohne vollständiges Datum sind nicht "vergangen"
+    if (!event.date.month) return false;
+    
+    const eventDate = new Date(
+      event.date.year,
+      event.date.month - 1,
+      event.date.day || 1
+    );
+    
+    return eventDate < now;
+  };
+
+  const nextEventId = getNextUpcomingEvent();
+
+  // Trenne Events in kommende und vergangene
+  const upcomingEvents = sortedEvents.filter(event => !isEventPast(event));
+  const pastEvents = sortedEvents.filter(event => isEventPast(event));
+
+  // Gruppiere kommende Events nach Jahr und Monat
+  const upcomingEventsByYearAndMonth = upcomingEvents.reduce(
     (acc, event) => {
       const year = event.date.year;
       const month = event.date.month || 13; // 13 für Events ohne Monat
@@ -447,7 +537,25 @@ export default function EventsPage() {
       acc[year][month].push(event);
       return acc;
     },
-    {} as Record<number, Record<number, typeof sortedEvents>>,
+    {} as Record<number, Record<number, typeof upcomingEvents>>,
+  );
+
+  // Gruppiere vergangene Events nach Jahr und Monat (umgekehrte Sortierung)
+  const pastEventsByYearAndMonth = pastEvents.reverse().reduce(
+    (acc, event) => {
+      const year = event.date.year;
+      const month = event.date.month || 13;
+
+      if (!acc[year]) {
+        acc[year] = {};
+      }
+      if (!acc[year][month]) {
+        acc[year][month] = [];
+      }
+      acc[year][month].push(event);
+      return acc;
+    },
+    {} as Record<number, Record<number, typeof pastEvents>>,
   );
 
   function getMonthName(month: number): string {
@@ -517,14 +625,15 @@ export default function EventsPage() {
         </div>
 
         <div className="space-y-16">
-          {Object.entries(eventsByYearAndMonth).map(([year, months]) => (
+          {/* Kommende Events */}
+          {Object.entries(upcomingEventsByYearAndMonth).map(([year, months]) => (
             <div key={year} className="space-y-12">
               <h2
                 className={cn("text-3xl font-semibold", gradients.title.primary)}
               >
                 {year}
               </h2>
-              {Object.entries(months).map(([month, events]) => (
+              {Object.entries(months).map(([month, eventsList]) => (
                 <div key={`${year}-${month}`} className="space-y-6">
                   <h3
                     className={cn(
@@ -538,7 +647,7 @@ export default function EventsPage() {
                   {/* Grid View */}
                   {viewMode === "grid" && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                      {events.map((event) => (
+                      {eventsList.map((event) => (
                         <div key={event.id} id={`event-${event.id}`}>
                           <EventCard
                             event={event}
@@ -549,6 +658,8 @@ export default function EventsPage() {
                             isExternal={event.isExternal}
                             registration={event.registration}
                             price={event.price}
+                            isNextEvent={event.id === nextEventId}
+                            isPast={false}
                           />
                         </div>
                       ))}
@@ -558,11 +669,13 @@ export default function EventsPage() {
                   {/* Compact List View */}
                   {viewMode === "compact" && (
                     <div className="space-y-3">
-                      {events.map((event) => (
+                      {eventsList.map((event) => (
                         <CompactEventItem
                           key={event.id}
                           event={event}
                           onClick={() => setSelectedEvent(event)}
+                          isNextEvent={event.id === nextEventId}
+                          isPast={false}
                         />
                       ))}
                     </div>
@@ -571,6 +684,67 @@ export default function EventsPage() {
               ))}
             </div>
           ))}
+
+          {/* Vergangene Events */}
+          {pastEvents.length > 0 && (
+            <div className="mt-24 border-t border-white/10 pt-16 space-y-12">
+              <h2 className="text-3xl font-semibold text-white/60">
+                Vergangene Events
+              </h2>
+              
+              {Object.entries(pastEventsByYearAndMonth).map(([year, months]) => (
+                <div key={year} className="space-y-10">
+                  <h3 className="text-2xl font-medium text-white/50">
+                    {year}
+                  </h3>
+                  {Object.entries(months).map(([month, eventsList]) => (
+                    <div key={`${year}-${month}`} className="space-y-6">
+                      <h4 className="text-xl font-medium text-white/40">
+                        {getMonthName(Number(month))}
+                      </h4>
+                      
+                      {/* Grid View */}
+                      {viewMode === "grid" && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                          {eventsList.map((event) => (
+                            <div key={event.id} id={`event-${event.id}`}>
+                              <EventCard
+                                event={event}
+                                title={event.title}
+                                date={formatEventDate(event.date)}
+                                location={event.location}
+                                description={event.description}
+                                isExternal={event.isExternal}
+                                registration={event.registration}
+                                price={event.price}
+                                isNextEvent={false}
+                                isPast={true}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      {/* Compact List View */}
+                      {viewMode === "compact" && (
+                        <div className="space-y-3">
+                          {eventsList.map((event) => (
+                            <CompactEventItem
+                              key={event.id}
+                              event={event}
+                              onClick={() => setSelectedEvent(event)}
+                              isNextEvent={false}
+                              isPast={true}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </PageLayout>
     </>
