@@ -585,16 +585,23 @@ const EventDialog = ({
 
 export default function EventsPage() {
   const [events, setEvents] = React.useState<Event[]>([]);
-  const [viewMode, setViewMode] = React.useState<ViewMode>(() => {
-    // Lade gespeicherte Präferenz aus LocalStorage
-    return getStorageItem<ViewMode>(STORAGE_KEYS.EVENTS_VIEW_MODE, "grid");
-  });
+  const [viewMode, setViewMode] = React.useState<ViewMode>("grid");
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  // Lade gespeicherte View-Mode-Präferenz nach dem ersten Render (Client-only)
+  React.useEffect(() => {
+    setIsMounted(true);
+    const savedMode = getStorageItem<ViewMode>(STORAGE_KEYS.EVENTS_VIEW_MODE, "grid");
+    setViewMode(savedMode);
+  }, []);
 
   // Speichere View-Mode-Änderungen im LocalStorage
   React.useEffect(() => {
-    setStorageItem(STORAGE_KEYS.EVENTS_VIEW_MODE, viewMode);
-  }, [viewMode]);
+    if (isMounted) {
+      setStorageItem(STORAGE_KEYS.EVENTS_VIEW_MODE, viewMode);
+    }
+  }, [viewMode, isMounted]);
 
   React.useEffect(() => {
     let mounted = true;
