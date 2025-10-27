@@ -24,7 +24,7 @@ export async function fetchEvents(options?: { revalidate?: number }): Promise<Ev
       const data = await res.json();
       return Array.isArray(data) ? (data as Event[]) : [];
     }
-  } catch (e) {
+  } catch {
     // swallow and try fallback
   }
 
@@ -38,7 +38,7 @@ export async function fetchEvents(options?: { revalidate?: number }): Promise<Ev
         const events = Array.isArray(data) ? data : data.events;
         if (Array.isArray(events)) return events as Event[];
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
   }
@@ -53,7 +53,7 @@ export async function fetchEvents(options?: { revalidate?: number }): Promise<Ev
         const events = Array.isArray(data) ? data : data.events;
         if (Array.isArray(events)) return events as Event[];
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
   }

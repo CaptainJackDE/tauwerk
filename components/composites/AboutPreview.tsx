@@ -7,7 +7,7 @@ export function AboutPreview() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
             <Image
-              src="/images/about-preview.jpg"
+              src="/images/hero/hero-1.jpg"
               alt="Tauwerk Community"
               fill
               className="object-cover"

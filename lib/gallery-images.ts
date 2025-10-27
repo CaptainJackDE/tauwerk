@@ -1,5 +1,5 @@
 // Auto-generated gallery index
-// Generated at: 2025-10-20T21:28:33.488Z
+// Generated at: 2025-10-27T20:51:19.125Z
 
 export interface GalleryImage {
   src: string;

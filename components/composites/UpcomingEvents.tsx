@@ -11,7 +11,6 @@ interface EventCardProps {
   title: string;
   date: string;
   location: string;
-  id: string;
   isExternal?: boolean;
   className?: string;
 }
@@ -21,7 +20,6 @@ const HomeEventCard = ({
   date,
   location,
   className,
-  id,
   isExternal,
 }: EventCardProps) => {
   return (
@@ -111,7 +109,6 @@ export function UpcomingEvents() {
                 title={event.title}
                 date={formatEventDate(event.date)}
                 location={event.location}
-                id={event.id}
                 isExternal={event.isExternal}
               />
             </Link>

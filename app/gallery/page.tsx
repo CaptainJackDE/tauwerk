@@ -163,6 +163,7 @@ export default function GalleryPage() {
               <button
                 className="p-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors duration-200"
                 onClick={() => setSelectedImage(image)}
+                aria-label={`Bild vergrößern: ${image.alt}`}
               >
                 <svg
                   className="w-5 h-5 text-white"
@@ -186,6 +187,12 @@ export default function GalleryPage() {
       {selectedImage && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-lg"
+          role="dialog"
+          aria-modal="true"
+          tabIndex={-1}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setSelectedImage(null);
+          }}
           onClick={() => setSelectedImage(null)}
         >
           <div className="relative w-full h-full flex items-center justify-center p-4">
@@ -257,6 +264,9 @@ export default function GalleryPage() {
 
             <div
               className="relative w-full max-w-7xl aspect-[4/3]"
+              role="presentation"
+              tabIndex={-1}
+              onKeyDown={(e) => e.stopPropagation()}
               onClick={(e) => e.stopPropagation()}
             >
               <Image

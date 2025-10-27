@@ -15,7 +15,7 @@ export function generateGalleryData(): GalleryImage[] {
     const galleryDir = path.join(process.cwd(), 'public', 'gallery');
     
     if (!fs.existsSync(galleryDir)) {
-      console.log('Gallery directory does not exist:', galleryDir);
+  console.warn('Gallery directory does not exist:', galleryDir);
       return [];
     }
 

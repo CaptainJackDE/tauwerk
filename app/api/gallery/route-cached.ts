@@ -18,7 +18,7 @@ export async function GET() {
       lastCacheTime = now;
       
       if (process.env.NODE_ENV === 'development') {
-        console.log(`Gallery cache refreshed: ${cachedImages.length} images found`);
+        console.warn(`Gallery cache refreshed: ${cachedImages.length} images found`);
       }
     }
 

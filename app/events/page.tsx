@@ -102,8 +102,12 @@ const EventCard = ({
       
       {/* Next Event Badge */}
       {isNextEvent && (
-        <div className="absolute -top-3 -right-3 bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-pulse">
-          Nächstes Event
+        <div className="absolute top-4 right-4 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-black/30 backdrop-blur-md px-3 py-1 text-[11px] text-white/90 shadow-md">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-2 w-2 rounded-full bg-primary/60 animate-ping" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+          </span>
+          <span className="font-semibold tracking-wide">Nächstes Event</span>
         </div>
       )}
       
@@ -186,7 +190,7 @@ const EventCard = ({
         {/* Action Button - immer am Ende */}
         {registration.required && registration.open && registration.link && (
           <Link href={registration.link} className="block w-full mt-auto">
-            <Button className="w-full bg-gradient-to-r from-primary/20 to-secondary/20 hover:from-primary/30 hover:to-secondary/30 text-foreground border border-white/10 hover:border-white/20 transition-all duration-300">
+            <Button fullWidth variant="primary">
               Jetzt anmelden
             </Button>
           </Link>
@@ -250,8 +254,12 @@ const CompactEventItem = ({
       
       {/* Next Event Badge for Compact View */}
       {isNextEvent && (
-        <div className="absolute -top-2 -right-2 bg-gradient-to-r from-primary to-secondary text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-lg">
-          Nächstes
+        <div className="absolute top-2 right-2 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-black/25 backdrop-blur-md px-2.5 py-0.5 text-[10px] text-white/90 shadow-md">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-1.5 w-1.5 rounded-full bg-primary/60 animate-ping" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+          </span>
+          <span className="font-semibold tracking-wide">Nächstes</span>
         </div>
       )}
       
@@ -308,6 +316,14 @@ const TimelineItem = ({ event, isNextEvent, isPast, onClick, position }: Timelin
         position === "left" ? "text-right" : "text-left"
       )}>
         <div
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onClick();
+            }
+          }}
           onClick={onClick}
           className={cn(
             "relative rounded-2xl border transition-all duration-300",
@@ -325,10 +341,10 @@ const TimelineItem = ({ event, isNextEvent, isPast, onClick, position }: Timelin
               position === "left" ? "justify-end" : "justify-start"
             )}>
               {isNextEvent && (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-primary/40 to-secondary/40 border border-primary/50 animate-pulse shadow-lg shadow-primary/30">
-                  <span className="relative flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary" />
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold border border-white/15 bg-black/30 backdrop-blur-md text-white/90 shadow-md">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-2 w-2 rounded-full bg-primary/60 animate-ping" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
                   </span>
                   Nächstes Event
                 </span>
@@ -399,14 +415,6 @@ const TimelineItem = ({ event, isNextEvent, isPast, onClick, position }: Timelin
 
       {/* Timeline Node */}
       <div className="relative flex items-center justify-center w-16 h-16 shrink-0 z-10">
-        {/* Vertical Line */}
-        <div className={cn(
-          "absolute w-0.5 h-full left-1/2 -translate-x-1/2 -z-10",
-          isPast
-            ? "bg-gradient-to-b from-white/5 to-white/10"
-            : "bg-gradient-to-b from-primary/40 via-secondary/30 to-primary/40"
-        )} />
-        
         {/* Outer Glow Ring */}
         <div className={cn(
           "absolute w-8 h-8 rounded-full transition-all duration-300",
@@ -447,10 +455,19 @@ const EventDialog = ({
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      tabIndex={-1}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") onClose();
+      }}
       onClick={onClose}
     >
       <div
         className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-background border border-white/10 shadow-2xl"
+        role="document"
+        tabIndex={-1}
+        onKeyDown={(e) => e.stopPropagation()}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -546,37 +563,32 @@ const EventDialog = ({
           )}
 
           {/* Actions */}
-          <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-white/10">
-            {event.registration.required && event.registration.open && event.registration.link && (
-              <Link href={event.registration.link} className="flex-1">
-                <Button className="w-full bg-gradient-to-r from-primary/20 to-secondary/20 hover:from-primary/30 hover:to-secondary/30 text-foreground border border-white/10 hover:border-white/20">
-                  Jetzt anmelden
-                </Button>
-              </Link>
-            )}
-            
-            {/* Calendar Export Buttons */}
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => downloadICS(event)}
-                className="flex-1 sm:flex-initial"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                .ics
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => window.open(getGoogleCalendarUrl(event), "_blank")}
-                className="flex-1 sm:flex-initial"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Google
-              </Button>
-            </div>
-          </div>
+          {(() => {
+            const hasRegistration = !!(event.registration.required && event.registration.open && event.registration.link);
+            return (
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-4 border-t border-white/10">
+                {/* Calendar Export Buttons (left) */}
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={() => downloadICS(event)}>
+                    <Download className="w-4 h-4 mr-2" />
+                    .ics
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => window.open(getGoogleCalendarUrl(event), "_blank")}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Google
+                  </Button>
+                </div>
+                {/* Primary CTA (right) */}
+                {hasRegistration && (
+                  <Link href={event.registration.link as string} className="sm:ml-auto sm:flex-1">
+                    <Button fullWidth variant="primary">
+                      Jetzt anmelden
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            );
+          })()}
         </div>
       </div>
     </div>
@@ -639,28 +651,7 @@ export default function EventsPage() {
     return 0;
   });
 
-  // Finde das nächste bevorstehende Event (ab heute)
-  const getNextUpcomingEvent = () => {
-    const now = new Date();
-    now.setHours(0, 0, 0, 0); // Auf Mitternacht setzen für Tagesvergleich
-    
-    for (const event of sortedEvents) {
-      // Wenn nur Jahr vorhanden, überspringe
-      if (!event.date.month) continue;
-      
-      const eventDate = new Date(
-        event.date.year,
-        event.date.month - 1,
-        event.date.day || 1
-      );
-      
-      // Wenn Event in der Zukunft oder heute
-      if (eventDate >= now) {
-        return event.id;
-      }
-    }
-    return null;
-  };
+  // (entfernt) getNextUpcomingEvent - Bestimmung erfolgt direkt über upcomingEvents
 
   // Prüfe ob ein Event in der Vergangenheit liegt
   const isEventPast = (event: Event): boolean => {
@@ -679,11 +670,12 @@ export default function EventsPage() {
     return eventDate < now;
   };
 
-  const nextEventId = getNextUpcomingEvent();
-
   // Trenne Events in kommende und vergangene
   const upcomingEvents = sortedEvents.filter(event => !isEventPast(event));
   const pastEvents = sortedEvents.filter(event => isEventPast(event));
+
+  // Das nächste Event ist das erste in den kommenden Events
+  const nextEventId = upcomingEvents.length > 0 ? upcomingEvents[0].id : null;
 
   // Gruppiere kommende Events nach Jahr und Monat
   const upcomingEventsByYearAndMonth = upcomingEvents.reduce(
@@ -757,51 +749,61 @@ export default function EventsPage() {
         title="Unsere Events"
         subtitle="Entdecke unsere kommenden Veranstaltungen und sei dabei!"
       >
-        {/* View Mode Toggle */}
-        <div className="flex justify-end mb-8">
-          <div className="inline-flex rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 p-1">
-            <button
-              onClick={() => setViewMode("grid")}
-              className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200",
-                viewMode === "grid"
-                  ? "bg-gradient-to-r from-primary/20 to-secondary/20 text-foreground"
-                  : "text-foreground/60 hover:text-foreground hover:bg-white/5"
-              )}
-            >
-              <LayoutGrid className="w-4 h-4" />
-              <span className="text-sm font-medium">Kacheln</span>
-            </button>
-            <button
-              onClick={() => setViewMode("compact")}
-              className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200",
-                viewMode === "compact"
-                  ? "bg-gradient-to-r from-primary/20 to-secondary/20 text-foreground"
-                  : "text-foreground/60 hover:text-foreground hover:bg-white/5"
-              )}
-            >
-              <List className="w-4 h-4" />
-              <span className="text-sm font-medium">Liste</span>
-            </button>
-            <button
-              onClick={() => setViewMode("timeline")}
-              className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200",
-                viewMode === "timeline"
-                  ? "bg-gradient-to-r from-primary/20 to-secondary/20 text-foreground"
-                  : "text-foreground/60 hover:text-foreground hover:bg-white/5"
-              )}
-            >
-              <Clock className="w-4 h-4" />
-              <span className="text-sm font-medium">Zeitstrahl</span>
-            </button>
+        {/* View Mode Toggle (only show after mount to avoid wrong active state flash) */}
+        {isMounted && (
+          <div className="flex justify-center md:justify-end mb-8" role="tablist" aria-label="Event-Ansicht">
+            <div className="inline-flex rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 p-1">
+              <button
+                onClick={() => setViewMode("grid")}
+                role="tab"
+                aria-selected={viewMode === "grid"}
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+                  viewMode === "grid"
+                    ? "bg-gradient-to-r from-primary/20 to-secondary/20 text-foreground ring-1 ring-primary/30"
+                    : "text-foreground/60 hover:text-foreground hover:bg-white/5"
+                )}
+              >
+                <LayoutGrid className="w-4 h-4" />
+                <span className="text-sm font-medium">Kacheln</span>
+              </button>
+              <button
+                onClick={() => setViewMode("compact")}
+                role="tab"
+                aria-selected={viewMode === "compact"}
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+                  viewMode === "compact"
+                    ? "bg-gradient-to-r from-primary/20 to-secondary/20 text-foreground ring-1 ring-primary/30"
+                    : "text-foreground/60 hover:text-foreground hover:bg-white/5"
+                )}
+              >
+                <List className="w-4 h-4" />
+                <span className="text-sm font-medium">Liste</span>
+              </button>
+              <button
+                onClick={() => setViewMode("timeline")}
+                role="tab"
+                aria-selected={viewMode === "timeline"}
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+                  viewMode === "timeline"
+                    ? "bg-gradient-to-r from-primary/20 to-secondary/20 text-foreground ring-1 ring-primary/30"
+                    : "text-foreground/60 hover:text-foreground hover:bg-white/5"
+                )}
+              >
+                <Clock className="w-4 h-4" />
+                <span className="text-sm font-medium">Zeitstrahl</span>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Timeline View */}
         {viewMode === "timeline" ? (
-          <div className="max-w-6xl mx-auto py-16">
+          <div className="relative max-w-6xl mx-auto py-16">
+            {/* Continuous center line */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/40 via-white/10 to-white/5 pointer-events-none" />
             {/* Kommende Events */}
             <div className="space-y-0">
               {upcomingEvents.map((event, index) => (
@@ -819,9 +821,6 @@ export default function EventsPage() {
             {/* Vergangene Events Separator */}
             {pastEvents.length > 0 && (
               <div className="relative my-20 py-12">
-                {/* Timeline Line continues */}
-                <div className="absolute left-1/2 -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-primary/40 via-white/10 to-white/5" />
-                
                 {/* Separator Badge */}
                 <div className="relative flex justify-center">
                   <div className="bg-gradient-to-br from-background via-background/95 to-background px-8 py-4 rounded-2xl border border-white/20 backdrop-blur-xl shadow-2xl">

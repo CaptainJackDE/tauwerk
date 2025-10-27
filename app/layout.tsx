@@ -1,5 +1,5 @@
 // app/layout.tsx
-import "@/styles/globals.css";
+import "./globals.css";
 import { Viewport, Metadata } from "next";
 import { Providers } from "./providers";
 import { fontSans } from "@/config/fonts";

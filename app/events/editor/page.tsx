@@ -11,7 +11,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
 import { formatEventDate } from "@/config/events";
@@ -34,7 +33,6 @@ type EditableEvent = Omit<Event, "registration" | "price"> & {
 
 export default function EventsEditorPage() {
   const [events, setEvents] = React.useState<EditableEvent[]>([]);
-  const [rawJson, setRawJson] = React.useState<string>("");
   const [error, setError] = React.useState<string>("");
 
   React.useEffect(() => {
@@ -46,9 +44,8 @@ export default function EventsEditorPage() {
     const file = e.target.files?.[0];
     if (!file) return;
     try {
-      const text = await file.text();
-      setRawJson(text);
-      const parsed = JSON.parse(text);
+  const text = await file.text();
+  const parsed = JSON.parse(text);
       const list = Array.isArray(parsed) ? parsed : parsed.events;
       if (!Array.isArray(list)) throw new Error("Ungültiges JSON-Format");
       setEvents(list as EditableEvent[]);
