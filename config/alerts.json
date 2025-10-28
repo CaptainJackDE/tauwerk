@@ -1,0 +1,29 @@
+[
+  {
+    "id": "example-info-1",
+    "title": "Neue Event-Anmeldung verfügbar",
+    "message": "Die Anmeldung für den CSD Schwerin 2025 ist ab sofort geöffnet. Sichere dir jetzt deinen Platz!",
+    "severity": "info",
+    "showOn": ["home", "events"],
+    "active": true,
+    "dismissible": false
+  },
+  {
+    "id": "example-warning-1",
+    "title": "Wichtiger Hinweis",
+    "message": "Bitte beachte die geänderten Öffnungszeiten unseres Büros während der Feiertage.",
+    "severity": "warning",
+    "showOn": ["home"],
+    "active": true,
+    "dismissible": false
+  },
+  {
+    "id": "example-critical-1",
+    "title": "Event-Ausfall",
+    "message": "Aufgrund unvorhergesehener Umstände muss das Event am 15. November leider ausfallen. Bereits gekaufte Tickets werden vollständig erstattet.",
+    "severity": "critical",
+    "showOn": ["events"],
+    "active": true,
+    "dismissible": false
+  }
+]

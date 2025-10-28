@@ -8,10 +8,13 @@ import { cn } from "@/lib/utils";
 import { Calendar, MapPin, UserCheck, UserX, Euro, Download, Plus, LayoutGrid, List, X, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageLayout } from "@/components/composites/PageLayout";
+import { AlertsContainer } from "@/components/composites/AlertsContainer";
 import Link from "next/link";
 import { downloadICS, getGoogleCalendarUrl } from "@/lib/calendar-utils";
 import { generateEventsListJsonLd } from "@/lib/seo-utils";
 import { getStorageItem, setStorageItem, STORAGE_KEYS } from "@/lib/storage";
+import { getAlerts } from "@/lib/alerts";
+import type { Alert } from "@/lib/alerts";
 
 type ViewMode = "grid" | "compact" | "timeline";
 
@@ -600,6 +603,7 @@ export default function EventsPage() {
   const [viewMode, setViewMode] = React.useState<ViewMode>("grid");
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
   const [isMounted, setIsMounted] = React.useState(false);
+  const [alerts, setAlerts] = React.useState<Alert[]>([]);
 
   // Lade gespeicherte View-Mode-Präferenz nach dem ersten Render (Client-only)
   React.useEffect(() => {
@@ -620,6 +624,11 @@ export default function EventsPage() {
     fetchEvents().then((data) => {
       if (mounted) setEvents(sortEventsByDate(data));
     });
+    
+    getAlerts().then((loadedAlerts) => {
+      if (mounted) setAlerts(loadedAlerts);
+    });
+    
     return () => {
       mounted = false;
     };
@@ -749,6 +758,9 @@ export default function EventsPage() {
         title="Unsere Events"
         subtitle="Entdecke unsere kommenden Veranstaltungen und sei dabei!"
       >
+        {/* Alerts oberhalb der Events */}
+        <AlertsContainer alerts={alerts} location="events" />
+        
         {/* View Mode Toggle (only show after mount to avoid wrong active state flash) */}
         {isMounted && (
           <div className="flex justify-center md:justify-end mb-8" role="tablist" aria-label="Event-Ansicht">
