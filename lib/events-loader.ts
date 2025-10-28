@@ -78,9 +78,9 @@ export function sortEventsByDate(events: Event[]): Event[] {
 
 export function getNextUpcomingEvent(events: Event[]): Event | null {
   const now = new Date();
-  now.setHours(0, 0, 0, 0); // Auf Mitternacht setzen für Tagesvergleich
+  now.setHours(0, 0, 0, 0); // Reset to midnight for day comparison
 
-  // Filtere nur featured Events
+  // Filter only featured events
   const featuredEvents = events.filter(event => event.featured === true);
   const sorted = sortEventsByDate(featuredEvents);
 

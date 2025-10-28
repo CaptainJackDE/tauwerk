@@ -130,11 +130,11 @@ export function formatEventDate(date: EventDate): string {
 
   let formattedDate = parts.join(".");
 
-  // Wenn nur das Jahr bekannt ist
+  // If only year is known
   if (!date.month) {
     formattedDate = `${date.year} (Termin wird noch bekannt gegeben)`;
   }
-  // Wenn nur Jahr und Monat bekannt sind
+  // If only year and month are known
   else if (!date.day) {
     const monthName = getMonthName(date.month);
     formattedDate = `${monthName} ${date.year} (Tag wird noch bekannt gegeben)`;
@@ -176,16 +176,16 @@ export function getUpcomingEvents(includeTBA: boolean = false): Event[] {
   const today = new Date();
   return upcomingEvents
     .filter((event) => {
-      // Wenn nur das Jahr bekannt ist
+      // If only year is known
       if (!event.date.month) return includeTBA;
 
-      // Wenn Monat und Jahr bekannt sind
+      // If month and year are known
       if (!event.date.day) {
         const eventDate = new Date(event.date.year, event.date.month - 1, 1);
         return includeTBA && eventDate >= today;
       }
 
-      // Wenn vollständiges Datum bekannt ist
+      // If complete date is known
       const eventDate = new Date(
         event.date.year,
         event.date.month - 1,
@@ -194,7 +194,7 @@ export function getUpcomingEvents(includeTBA: boolean = false): Event[] {
       return eventDate >= today;
     })
     .sort((a, b) => {
-      // Sortiere nach Bekanntheitsgrad des Datums
+      // Sort by date precision
       if (!a.date.month) return 1;
       if (!b.date.month) return -1;
       if (!a.date.day) return 1;

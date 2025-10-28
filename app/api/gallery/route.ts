@@ -14,29 +14,29 @@ export async function GET() {
   try {
     const galleryDir = path.join(process.cwd(), "public", "gallery");
 
-    // Überprüfe, ob das Verzeichnis existiert
+    // Check if directory exists
     if (!fs.existsSync(galleryDir)) {
   return NextResponse.json([], { status: 200 });
     }
 
-    // Lese alle Dateien aus dem Verzeichnis
+    // Read all files from directory
     const files = fs.readdirSync(galleryDir);
 
-    // Filtere nur Bilddateien
+    // Filter only image files
     const imageFiles = files.filter((file) => {
       const ext = path.extname(file).toLowerCase();
       return [".jpg", ".jpeg", ".png", ".gif", ".webp"].includes(ext);
     });
 
-    // Erstelle ein Array von Bildobjekten
+    // Create array of image objects
     const images: GalleryImage[] = imageFiles.map((file) => ({
       src: `/gallery/${file}`,
-      alt: path.parse(file).name.replace(/[-_]/g, ' '), // Bessere Alt-Text Formatierung
+      alt: path.parse(file).name.replace(/[-_]/g, ' '), // Better alt text formatting
     }));
 
     return NextResponse.json(images, { status: 200 });
   } catch (error) {
-    console.error("Fehler beim Lesen der Bilder:", error);
+    console.error("Error reading images:", error);
     return NextResponse.json(
       { error: "Fehler beim Laden der Bilder" },
       { status: 500 },

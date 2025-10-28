@@ -16,7 +16,7 @@ export interface Alert {
 }
 
 /**
- * Lädt alle aktiven Alerts aus der appsettings.json
+ * Load all active alerts from appsettings.json
  */
 export async function getAlerts(): Promise<Alert[]> {
   try {
@@ -24,13 +24,13 @@ export async function getAlerts(): Promise<Alert[]> {
     const alerts = appSettings.alerts as Alert[];
     return alerts.filter((alert) => alert.active);
   } catch (error) {
-    console.warn("Fehler beim Laden der Alerts:", error);
+    console.warn("Error loading alerts:", error);
     return [];
   }
 }
 
 /**
- * Filtert Alerts nach Anzeige-Ort
+ * Filter alerts by display location
  */
 export function getAlertsForLocation(
   alerts: Alert[],

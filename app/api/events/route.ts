@@ -3,7 +3,7 @@ import appSettings from "@/public/appsettings.json";
 
 export const runtime = 'edge';
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     // Load from appsettings.json
     return NextResponse.json(appSettings.events || []);

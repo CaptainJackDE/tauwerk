@@ -1,21 +1,21 @@
 /**
- * Zentrale LocalStorage-Verwaltung für Tauwerk
- * Bietet typensichere Speicherung und Abruf von Werten
+ * Central LocalStorage management for Tauwerk
+ * Provides type-safe storage and retrieval of values
  */
 
-// Storage Keys - zentral definiert
+// Storage Keys - centrally defined
 export const STORAGE_KEYS = {
   EVENTS_VIEW_MODE: "tauwerk-events-view-mode",
   THEME: "tauwerk-theme",
-  // Weitere Keys können hier hinzugefügt werden
+  // Additional keys can be added here
 } as const;
 
 type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];
 
 /**
- * Speichert einen Wert im LocalStorage
- * @param key - Storage Key aus STORAGE_KEYS
- * @param value - Zu speichernder Wert (wird automatisch zu JSON serialisiert)
+ * Save a value to LocalStorage
+ * @param key - Storage Key from STORAGE_KEYS
+ * @param value - Value to save (automatically serialized to JSON)
  */
 export function setStorageItem<T>(key: StorageKey, value: T): void {
   if (typeof window === "undefined") return;
@@ -24,15 +24,15 @@ export function setStorageItem<T>(key: StorageKey, value: T): void {
     const serializedValue = JSON.stringify(value);
     localStorage.setItem(key, serializedValue);
   } catch (error) {
-    console.error(`Fehler beim Speichern von ${key}:`, error);
+    console.error(`Error saving ${key}:`, error);
   }
 }
 
 /**
- * Lädt einen Wert aus dem LocalStorage
- * @param key - Storage Key aus STORAGE_KEYS
- * @param defaultValue - Fallback-Wert, falls nichts gespeichert ist
- * @returns Der gespeicherte Wert oder defaultValue
+ * Load a value from LocalStorage
+ * @param key - Storage Key from STORAGE_KEYS
+ * @param defaultValue - Fallback value if nothing is stored
+ * @returns The stored value or defaultValue
  */
 export function getStorageItem<T>(key: StorageKey, defaultValue: T): T {
   if (typeof window === "undefined") return defaultValue;
@@ -43,14 +43,14 @@ export function getStorageItem<T>(key: StorageKey, defaultValue: T): T {
     
     return JSON.parse(item) as T;
   } catch (error) {
-    console.error(`Fehler beim Laden von ${key}:`, error);
+    console.error(`Error loading ${key}:`, error);
     return defaultValue;
   }
 }
 
 /**
- * Entfernt einen Wert aus dem LocalStorage
- * @param key - Storage Key aus STORAGE_KEYS
+ * Remove a value from LocalStorage
+ * @param key - Storage Key from STORAGE_KEYS
  */
 export function removeStorageItem(key: StorageKey): void {
   if (typeof window === "undefined") return;
@@ -58,14 +58,14 @@ export function removeStorageItem(key: StorageKey): void {
   try {
     localStorage.removeItem(key);
   } catch (error) {
-    console.error(`Fehler beim Entfernen von ${key}:`, error);
+    console.error(`Error removing ${key}:`, error);
   }
 }
 
 /**
- * Prüft, ob ein Key im LocalStorage existiert
- * @param key - Storage Key aus STORAGE_KEYS
- * @returns true wenn der Key existiert
+ * Check if a key exists in LocalStorage
+ * @param key - Storage Key from STORAGE_KEYS
+ * @returns true if the key exists
  */
 export function hasStorageItem(key: StorageKey): boolean {
   if (typeof window === "undefined") return false;
@@ -73,7 +73,7 @@ export function hasStorageItem(key: StorageKey): boolean {
   try {
     return localStorage.getItem(key) !== null;
   } catch (error) {
-    console.error(`Fehler beim Prüfen von ${key}:`, error);
+    console.error(`Error checking ${key}:`, error);
     return false;
   }
 }
