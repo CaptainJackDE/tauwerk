@@ -4,7 +4,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { gradients } from "@/config/gradients";
 import { Calendar, Clock, MapPin } from "lucide-react";
-import { type Event, formatEventDate } from "@/config/events";
+import { type Event, formatEventDate } from "@/config/appsettings";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 

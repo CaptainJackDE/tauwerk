@@ -8,7 +8,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Navigation } from "@/components/composites/Navigation";
 import { Send, Instagram } from "lucide-react";
-import { SITE } from "@/config/constants";
+import { SITE } from "@/config/appsettings";
 import { Tooltip } from "@heroui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });

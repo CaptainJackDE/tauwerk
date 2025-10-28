@@ -13,8 +13,8 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { formatEventDate } from "@/config/events";
-import type { Event } from "@/config/events";
+import { formatEventDate } from "@/config/appsettings";
+import type { Event } from "@/config/appsettings";
 import { fetchEvents } from "@/lib/events-loader";
 
 type EditableRegistration = {

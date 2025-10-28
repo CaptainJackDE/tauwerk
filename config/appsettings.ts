@@ -1,4 +1,28 @@
 import appSettings from "@/public/appsettings.json";
+import {
+  LucideIcon,
+  Users,
+  Calendar,
+  MapPin,
+  Clock,
+  Ticket,
+  Heart,
+  Shield,
+  Lock,
+  Users2,
+} from "lucide-react";
+
+// ============================================================================
+// SITE, NAVIGATION, LEGAL
+// ============================================================================
+
+export const SITE = appSettings.site as typeof appSettings.site;
+export const NAVIGATION = appSettings.navigation as typeof appSettings.navigation;
+export const LEGAL = appSettings.legal as typeof appSettings.legal;
+
+// ============================================================================
+// EVENTS
+// ============================================================================
 
 export type EventCategory = "csd" | "fetish" | "private" | "other";
 
@@ -199,3 +223,48 @@ function getMonthName(month: number): string {
   ];
   return months[month - 1];
 }
+
+// ============================================================================
+// FAQ
+// ============================================================================
+
+export interface FAQ {
+  id: string;
+  question: string;
+  answer: string;
+  icon: LucideIcon;
+}
+
+const faqIconMap: Record<string, LucideIcon> = {
+  Heart,
+  Users,
+  Shield,
+  Lock,
+  Calendar,
+  MapPin,
+  Clock,
+  Ticket,
+};
+
+export const faqs: FAQ[] = appSettings.faq.map((item) => ({
+  ...item,
+  icon: faqIconMap[item.icon] || Heart,
+})) as FAQ[];
+
+// ============================================================================
+// ABOUT
+// ============================================================================
+
+const aboutIconMap: Record<string, LucideIcon> = {
+  Shield,
+  Users2,
+  Heart,
+  Users,
+};
+
+export const values = appSettings.about.values.map((item) => ({
+  ...item,
+  icon: aboutIconMap[item.icon] || Heart,
+}));
+
+export const teamMembers = appSettings.about.teamMembers;

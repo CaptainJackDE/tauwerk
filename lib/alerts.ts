@@ -16,11 +16,12 @@ export interface Alert {
 }
 
 /**
- * Lädt alle aktiven Alerts aus der alerts.json
+ * Lädt alle aktiven Alerts aus der appsettings.json
  */
 export async function getAlerts(): Promise<Alert[]> {
   try {
-    const alerts = (await import("@/config/alerts.json")).default as Alert[];
+    const appSettings = (await import("@/public/appsettings.json")).default;
+    const alerts = appSettings.alerts as Alert[];
     return alerts.filter((alert) => alert.active);
   } catch (error) {
     console.warn("Fehler beim Laden der Alerts:", error);

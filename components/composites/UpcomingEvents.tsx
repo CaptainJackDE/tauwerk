@@ -1,5 +1,5 @@
 import React from "react";
-import { formatEventDate, type Event } from "@/config/events";
+import { formatEventDate, type Event } from "@/config/appsettings";
 import { fetchEvents, sortEventsByDate } from "@/lib/events-loader";
 import { gradients } from "@/config/gradients";
 import { cn } from "@/lib/utils";

@@ -2,10 +2,10 @@ import React from "react";
 import { HeroSlider } from "./HeroSlider";
 import { Button } from "../ui/button";
 import { gradients } from "@/config/gradients";
-import { formatEventDate, type Event } from "@/config/events";
+import { formatEventDate, type Event } from "@/config/appsettings";
 import { fetchEvents } from "@/lib/events-loader";
 import { Calendar } from "lucide-react";
-import { SITE } from "@/config/constants";
+import { SITE } from "@/config/appsettings";
 
 export function Hero() {
   const [todayEvent, setTodayEvent] = React.useState<Event | null>(null);

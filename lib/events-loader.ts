@@ -1,4 +1,4 @@
-import type { Event } from "@/config/events";
+import type { Event } from "@/config/appsettings";
 
 // Resolve base URL for server and client
 function getBaseUrl(): string | null {

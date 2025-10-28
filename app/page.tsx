@@ -12,12 +12,12 @@ import { FAQ } from "@/components/composites/FAQ";
 import { AlertsContainer } from "@/components/composites/AlertsContainer";
 import dynamic from "next/dynamic";
 const EventCountdown = dynamic(() => import("@/components/composites/EventCountdown").then(m => m.EventCountdown), { ssr: false });
-import { faqs } from "@/config/faq";
+import { faqs } from "@/config/appsettings";
 import { cn } from "@/lib/utils";
 import { gradients } from "@/config/gradients";
 import { fetchEvents, getNextUpcomingEvent } from "@/lib/events-loader";
 import { getAlerts } from "@/lib/alerts";
-import type { Event } from "@/config/events";
+import type { Event } from "@/config/appsettings";
 import type { Alert } from "@/lib/alerts";
 
 export default function Home() {

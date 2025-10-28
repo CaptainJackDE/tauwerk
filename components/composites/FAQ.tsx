@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { gradients } from "@/config/gradients";
-import type { FAQ } from "@/config/faq";
+import type { FAQ } from "@/config/appsettings";
 import { ChevronDown } from "lucide-react";
 
 interface FAQProps {

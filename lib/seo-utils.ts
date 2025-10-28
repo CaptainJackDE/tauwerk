@@ -1,4 +1,4 @@
-import type { Event } from "@/config/events";
+import type { Event } from "@/config/appsettings";
 
 /**
  * Generate JSON-LD structured data for a single event (Schema.org Event)

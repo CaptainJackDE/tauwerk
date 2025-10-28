@@ -1,4 +1,4 @@
-import type { Event } from "@/config/events";
+import type { Event } from "@/config/appsettings";
 
 /**
  * Generates an iCal (.ics) file content for a single event

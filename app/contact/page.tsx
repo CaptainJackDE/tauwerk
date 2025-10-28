@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { gradients } from "@/config/gradients";
 import { Instagram, Mail, Send, MapPin } from "lucide-react";
 import Link from "next/link";
-import { SITE } from "@/config/constants";
+import { SITE } from "@/config/appsettings";
 
 export default function ContactPage() {
   return (

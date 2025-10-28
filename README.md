@@ -233,12 +233,27 @@ Events can be edited in real-time via a JSON file, either locally or from a remo
 
 ### Content Management
 
-Update site content by editing configuration files:
+All site content is now centrally managed in a single configuration file:
 
-- **Site info**: `config/constants.ts`
-- **Events**: `config/events.ts`
-- **FAQ**: `config/faq.ts`
-- **Design**: `config/gradients.ts`
+- **Central Config**: `config/appsettings.json` - Contains all site configuration
+  - Site metadata (name, description, social links)
+  - Navigation structure
+  - Legal/Imprint information
+  - Events data
+  - Alerts configuration
+  - FAQ entries
+  - About page content (values, team members)
+
+- **TypeScript Accessors**: The following files provide typed access to appsettings.json:
+  - `config/constants.ts` - Exports SITE, NAVIGATION, LEGAL
+  - `config/events.ts` - Exports event data and utility functions
+  - `config/alerts.ts` - Via `lib/alerts.ts` (loads from appsettings)
+  - `config/faq.ts` - Exports FAQ with icon mapping
+  - `config/about.ts` - Exports values and team members with icon mapping
+
+- **Design System**: `config/gradients.ts` - Gradient definitions (unchanged)
+
+**Migration**: The old separate files (`events.json`, `alerts.json`, `faq.ts`, `about.ts`) have been merged into `appsettings.json`. All components automatically reference the new structure via the existing TypeScript files.
 
 ### Performance Optimization
 

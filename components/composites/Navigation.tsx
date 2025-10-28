@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { gradients } from "@/config/gradients";
-import { NAVIGATION, SITE } from "@/config/constants";
+import { NAVIGATION, SITE } from "@/config/appsettings";
 import { Menu, X } from "lucide-react";
 
 export function Navigation() {

@@ -1,6 +1,6 @@
 import React from "react";
 import { PageLayout } from "@/components/composites/PageLayout";
-import { LEGAL } from "@/config/constants";
+import { LEGAL } from "@/config/appsettings";
 
 export default function Legal() {
   return (

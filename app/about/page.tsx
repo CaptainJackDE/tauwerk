@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { gradients } from "@/config/gradients";
-import { values, teamMembers } from "@/config/about";
+import { values, teamMembers } from "@/config/appsettings";
 import { PageLayout } from "@/components/composites/PageLayout";
 
 export const metadata: Metadata = {
