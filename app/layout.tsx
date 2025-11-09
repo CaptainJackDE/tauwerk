@@ -6,6 +6,7 @@ import { fontSans } from "@/config/fonts";
 import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { MaintenanceProvider } from "@/components/providers/MaintenanceProvider";
 import { Navigation } from "@/components/composites/Navigation";
 import { Send, Instagram } from "lucide-react";
 import { SITE } from "@/config/appsettings";
@@ -68,6 +69,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Check if maintenance mode is enabled
+  const maintenanceMode = process.env.MAINTENANCE_MODE === "true";
+
   return (
     <html suppressHydrationWarning lang="de">
       <head />
@@ -80,14 +84,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-            <div className="relative flex flex-col min-h-screen">
-              <Navigation />
-              <main className="flex-grow">
-                {children}
-                <Analytics />
-              </main>
-              <footer className="w-full border-t py-6">
+          <MaintenanceProvider maintenanceMode={maintenanceMode}>
+            <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+              <div className="relative flex flex-col min-h-screen">
+                <Navigation />
+                <main className="flex-grow">
+                  {children}
+                  <Analytics />
+                </main>
+                <footer className="w-full border-t py-6">
                 <div className="container mx-auto px-4">
                   <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                     <div className="text-sm text-muted-foreground">
@@ -140,8 +145,9 @@ export default function RootLayout({
                   </div>
                 </div>
               </footer>
-            </div>
-          </Providers>
+              </div>
+            </Providers>
+          </MaintenanceProvider>
         </ThemeProvider>
       </body>
     </html>
