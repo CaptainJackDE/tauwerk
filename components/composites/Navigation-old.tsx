@@ -13,7 +13,7 @@ export function Navigation() {
   const router = useRouter();
   const { isMaintenanceMode, isAuthenticated } = useMaintenanceMode();
 
-  // Handle navigation clicks during maintenance mode
+    // Handle navigation clicks during maintenance mode
   const handleNavClick = (href: string, e: React.MouseEvent) => {
     if (isMaintenanceMode && !isAuthenticated && href !== "/maintenance") {
       e.preventDefault();
@@ -21,6 +21,11 @@ export function Navigation() {
       router.push("/maintenance");
     }
   };
+
+  return (
+
+export function Navigation() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50">

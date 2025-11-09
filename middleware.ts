@@ -1,34 +1,27 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { MAINTENANCE_CONFIG, isPathAllowed, getMaintenanceStatus } from "./lib/maintenance";
 
 export function middleware(request: NextRequest) {
-  // Check if maintenance mode is enabled
-  const maintenanceMode = process.env.MAINTENANCE_MODE === "true";
+  const status = getMaintenanceStatus();
+  
+  // Debug logging
+  console.log("🔧 Middleware Debug:");
+  console.log("Status:", status);
+  console.log("Request pathname:", request.nextUrl.pathname);
   
   // Skip middleware if maintenance mode is disabled
-  if (!maintenanceMode) {
+  if (!status.isEnabled) {
+    console.log("❌ Maintenance mode is DISABLED, allowing all requests");
     return NextResponse.next();
   }
 
+  console.log("✅ Maintenance mode is ENABLED, checking request...");
   const { pathname } = request.nextUrl;
 
-  // Always allow these paths regardless of authentication
-  const allowedPaths = [
-    "/api/maintenance",
-    "/_next",
-    "/maintenance",
-    "/favicon.ico",
-    "/robots.txt",
-    "/sitemap.xml"
-  ];
-
-  const allowedExtensions = [".css", ".js", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico", ".woff", ".woff2", ".ttf"];
-
-  // Check if path or extension is allowed
-  const isAllowedPath = allowedPaths.some(path => pathname.startsWith(path));
-  const isAllowedExtension = allowedExtensions.some(ext => pathname.includes(ext));
-
-  if (isAllowedPath || isAllowedExtension) {
+  // Check if path is allowed
+  if (isPathAllowed(pathname)) {
+    console.log("🟢 Allowed path:", pathname);
     return NextResponse.next();
   }
 

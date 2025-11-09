@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { MaintenanceProvider } from "@/components/providers/MaintenanceProvider";
+import { MaintenanceGuard } from "@/components/providers/MaintenanceGuard";
 import { Navigation } from "@/components/composites/Navigation";
 import { Send, Instagram } from "lucide-react";
 import { SITE } from "@/config/appsettings";
@@ -85,13 +86,14 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <MaintenanceProvider maintenanceMode={maintenanceMode}>
-            <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-              <div className="relative flex flex-col min-h-screen">
-                <Navigation />
-                <main className="flex-grow">
-                  {children}
-                  <Analytics />
-                </main>
+            <MaintenanceGuard>
+              <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+                <div className="relative flex flex-col min-h-screen">
+                  <Navigation />
+                  <main className="flex-grow">
+                    {children}
+                    <Analytics />
+                  </main>
                 <footer className="w-full border-t py-6">
                 <div className="container mx-auto px-4">
                   <div className="flex flex-col md:flex-row justify-between items-center gap-4">
@@ -145,8 +147,9 @@ export default function RootLayout({
                   </div>
                 </div>
               </footer>
-              </div>
-            </Providers>
+                </div>
+              </Providers>
+            </MaintenanceGuard>
           </MaintenanceProvider>
         </ThemeProvider>
       </body>
