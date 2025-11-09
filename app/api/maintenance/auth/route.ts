@@ -31,14 +31,14 @@ export async function POST(request: Request) {
     const userAgent = headersList.get("user-agent") || "";
     const xForwardedFor = headersList.get("x-forwarded-for") || "";
     
-    // Log authentication attempt for security monitoring
-    console.log(`Maintenance auth attempt from ${xForwardedFor || 'unknown'} (${userAgent})`);
+  // Log authentication attempt for security monitoring
+  console.warn(`Maintenance auth attempt from ${xForwardedFor || 'unknown'} (${userAgent})`);
 
     // Secure password comparison
     const isValidPassword = password === maintenancePassword;
 
     if (isValidPassword) {
-      console.log(`Successful maintenance authentication from ${xForwardedFor || 'unknown'}`);
+      console.warn(`Successful maintenance authentication from ${xForwardedFor || 'unknown'}`);
       return NextResponse.json({ success: true });
     } else {
       // Log failed attempt for security monitoring

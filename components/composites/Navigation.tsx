@@ -17,7 +17,7 @@ export function Navigation() {
   const handleNavClick = (href: string, e: React.MouseEvent) => {
     if (isMaintenanceMode && !isAuthenticated && href !== "/maintenance") {
       e.preventDefault();
-      console.log("🚫 Navigation blocked: Redirecting to maintenance");
+      console.warn("🚫 Navigation blocked: Redirecting to maintenance");
       router.push("/maintenance");
     }
   };
