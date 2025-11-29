@@ -34,7 +34,9 @@ export async function GET() {
       alt: path.parse(file).name.replace(/[-_]/g, ' '), // Better alt text formatting
     }));
 
-    return NextResponse.json(images, { status: 200 });
+    const response = NextResponse.json(images, { status: 200 });
+    response.headers.set("Cache-Control", "public, max-age=3600, stale-while-revalidate=86400");
+    return response;
   } catch (error) {
     console.error("Error reading images:", error);
     return NextResponse.json(

@@ -12,8 +12,12 @@ export function middleware(request: NextRequest) {
   
   // Skip middleware if maintenance mode is disabled
   if (!status.isEnabled) {
-    console.log("❌ Maintenance mode is DISABLED, allowing all requests");
-    return NextResponse.next();
+    // Set security headers globally
+    const response = NextResponse.next();
+    response.headers.set("X-Frame-Options", "DENY");
+    response.headers.set("X-Content-Type-Options", "nosniff");
+    response.headers.set("Content-Security-Policy", "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:;");
+    return response;
   }
 
   console.log("✅ Maintenance mode is ENABLED, checking request...");
