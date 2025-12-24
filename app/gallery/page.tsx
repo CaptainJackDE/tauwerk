@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { PageLayout } from "@/components/composites/PageLayout";
+import { GalleryThumbnail } from "@/components/composites/GalleryThumbnail";
 
 interface ImageData {
   src: string;
